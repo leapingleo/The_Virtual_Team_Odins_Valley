@@ -85,16 +85,19 @@ public class InteractableCube : MonoBehaviour
 
     public void Rotate(Vector3 rotVec, float rotSpeed)
     {
-        Debug.Log("rotated");
         float xRot = rotVec.x * Mathf.Deg2Rad * rotSpeed;
         float yRot = rotVec.y * Mathf.Deg2Rad * rotSpeed;
         float zRot = rotVec.z * Mathf.Deg2Rad * rotSpeed;
 
         if (type == MovementType.Z_AXIS)
-            transform.RotateAround(transform.forward, zRot);
+            transform.RotateAround(transform.forward, xRot);
         if (type == MovementType.X_AXIS)
             transform.RotateAround(transform.right, -xRot);
         if (type == MovementType.Y_AXIS)
-            transform.RotateAround(transform.up, yRot);
+            transform.RotateAround(transform.up, xRot);
+
+        //  transform.RotateAround(Vector3.up, -xRot);
+        //  transform.RotateAround(Vector3.right, yRot);
+        // transform.RotateAround(transform.forward, zRot);
     }
 }

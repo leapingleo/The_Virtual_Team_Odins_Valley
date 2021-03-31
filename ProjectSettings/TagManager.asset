@@ -8,6 +8,7 @@ TagManager:
   - Rotatable
   - sphere
   - Reset
+  - Floor
   layers:
   - Default
   - TransparentFX

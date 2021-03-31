@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: Walk With God
+  productName: Untitled VR Platformer
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -129,8 +129,11 @@ PlayerSettings:
     Others: 1
   bundleVersion: 0.1
   preloadedAssets:
+  - {fileID: 0}
   - {fileID: 11400000, guid: 53c61ccb789855c4093401f31359c680, type: 2}
   - {fileID: -195077916529808632, guid: c89613ca079b94b2ba68cd240ccb5ae3, type: 2}
+  - {fileID: 0}
+  - {fileID: -4381015442538489293, guid: 89d26130c0bc1e8428be3aabe822ba00, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -148,8 +151,8 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.DefaultCompany.WalkWithGod
-    Standalone: com.DefaultCompany.VRtest
+    Android: com.DefaultCompany.UntitledVRPlatformer
+    Standalone: com.DefaultCompany.UntitledVRPlatformer
   buildNumber:
     Standalone: 0
     iPhone: 0
