@@ -9,6 +9,9 @@ TagManager:
   - sphere
   - Reset
   - Floor
+  - Platform
+  - Throwable
+  - ShurikenWall
   layers:
   - Default
   - TransparentFX
