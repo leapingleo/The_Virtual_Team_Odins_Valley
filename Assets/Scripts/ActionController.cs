@@ -61,6 +61,7 @@ public class ActionController : MonoBehaviour
     private void SecondaryButtonCanceled(InputAction.CallbackContext obj)
     {
         secondaryButtonPressed = false;
+        character.GetComponent<CharacterMovementWithAnimations>().Attack();
     }
 
     private void SecondaryButtonPerformed(InputAction.CallbackContext obj)
@@ -121,9 +122,11 @@ public class ActionController : MonoBehaviour
 
     private void TranslateActionCanceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        lineRenderer.enabled = true;
+        Debug.Log("canceled");
+        //lineRenderer.enabled = true;
         handObject.GetComponent<ArrowMovement>().SetEnabled(false);
         handObject.transform.GetChild(1).gameObject.SetActive(true);
+        character.GetComponent<CharacterMovementWithAnimations>().EnterIdle();
     }
 
     private void UIActionPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -140,7 +143,7 @@ public class ActionController : MonoBehaviour
     {
         handObject.GetComponent<HandObjectScript>().ResetRotation();
         handObject.GetComponent<ArrowMovement>().SetEnabled(false);
-        character.GetComponent<CharacterMovement>().MoveCharacter(Vector2.zero);
+        character.GetComponent<CharacterMovementWithAnimations>().MoveCharacter(Vector2.zero);
     }
 
     private void SwitchStates()
@@ -163,7 +166,7 @@ public class ActionController : MonoBehaviour
         Vector3 vec3 = transform.TransformDirection(new Vector3(vec2.x, 0.0f, vec2.y));
         vec2.x = vec3.x;
         vec2.y = vec3.z;
-        character.GetComponent<CharacterMovement>().MoveCharacter(vec2);
+        character.GetComponent<CharacterMovementWithAnimations>().MoveCharacter(vec2);
         MoveArrow(vec2);
     }
 

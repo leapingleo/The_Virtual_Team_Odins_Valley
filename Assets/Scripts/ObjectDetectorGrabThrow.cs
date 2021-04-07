@@ -35,8 +35,10 @@ public class ObjectDetectorGrabThrow : MonoBehaviour
 
         if (actionController.MainButtonPressed && detectedObject != null)
         {
-            if (detectedObject.CompareTag("Throwable"))
+            if (detectedObject.CompareTag("Throwable") && detectedObject.GetComponent<GrabThrow>().canBeGrabThrown)
                 GrabObject(detectedObject);
+            else
+                detectedObject = null;
         }
         //if holding on to object and release, it will shoot it.
         else if (!actionController.MainButtonPressed && detectedObject != null && detectedObject.CompareTag("Throwable"))

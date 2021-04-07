@@ -9,6 +9,8 @@ public class GrabThrow : MonoBehaviour
     public float moveToSpeed;
     public float moveAwaySpeed;
 
+    public bool canBeGrabThrown = true;
+    public bool grabbed = false;
     private bool moveToHandInit = true;
     private bool moveAwayHandInit = true;
     private bool movedToHand = false;
@@ -87,6 +89,7 @@ public class GrabThrow : MonoBehaviour
 
     public virtual void MoveAwayHandInit()
     {
+        grabbed = true;
         transform.parent = null;
         bc.enabled = true;
     }
