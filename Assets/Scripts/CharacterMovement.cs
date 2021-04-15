@@ -4,23 +4,61 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    //public Vector3 dir;
     public float speed;
     public float jumpForce;
     public Rigidbody rigidBody;
     private Vector3 dir;
+    private bool jumped;
+    private float glideForce;
+    public float glideDistanceFactor;
+    private float glideSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
-
+      
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        Debug.Log(Physics.gravity);
+        if (ActionController.Instance.ActivationPressed && !jumped)
+        {
+           
+            Jump();
+            glideForce = jumpForce;
+        }
 
-        rigidBody.MovePosition(transform.position + dir * speed * Time.fixedDeltaTime);
+        if (jumped && ActionController.Instance.ActivationPressed)
+        {
+            if (glideForce > 0f)
+                glideForce -= 0.6f;
+            else
+                glideForce = -0.5f;
+
+            //  if (limit > 0f)
+            //     limit = -0.0001f;
+            rigidBody.velocity = new Vector3(rigidBody.velocity.x, glideForce, rigidBody.velocity.z);
+
+            //   Physics.gravity = new Vector3(0f, limit, 0f);
+            rigidBody.MovePosition(transform.position + dir * speed * glideSpeed * Time.fixedDeltaTime);
+        }
+        else
+            rigidBody.MovePosition(transform.position + dir * speed * glideSpeed * Time.fixedDeltaTime);
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        glideSpeed = 1f;
+        if (!ActionController.Instance.ActivationPressed)
+            jumped = false;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        glideSpeed = glideDistanceFactor;
+        jumped = true;
     }
 
     public void MoveCharacter(Vector2 dir)

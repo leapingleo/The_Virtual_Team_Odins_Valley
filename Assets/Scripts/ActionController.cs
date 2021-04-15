@@ -7,15 +7,16 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class ActionController : MonoBehaviour
 {
+    public static ActionController Instance;
     public InputAction mainButton;
     public InputAction secondaryButton;
-    enum HandState { PLAYER, INTERACT };
-    private HandState handState;
     public GameObject handObject;
     public GameObject character;
     private ActionBasedController controller;
     private LineRenderer lineRenderer;
-    private ObjectDetector objectDetector;
+    public float gripPressedValue;
+    private bool activationPressed;
+    public bool ActivationPressed { get { return activationPressed; } }
     private bool mainButtonPressed;
     public bool MainButtonPressed { get { return mainButtonPressed; } }
     private bool secondaryButtonPressed;
@@ -27,11 +28,12 @@ public class ActionController : MonoBehaviour
 
     void Awake()
     {
-        handState = HandState.PLAYER;
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
 
         handObject.transform.GetChild(1).gameObject.SetActive(true);
-        lineRenderer = GetComponent<LineRenderer>();
-        objectDetector = GetComponent<ObjectDetector>();
     }
 
     // Start is called before the first frame update
@@ -45,6 +47,9 @@ public class ActionController : MonoBehaviour
 
         controller.activateAction.action.performed += ActivateActionPerformed;
 
+        controller.activateAction.action.canceled += ActivateActionCanceled;
+
+
         // pushing down the joystick will activate this.
         controller.uiPressAction.action.performed += UIActionPerformed;
 
@@ -56,6 +61,17 @@ public class ActionController : MonoBehaviour
 
         secondaryButton.performed += SecondaryButtonPerformed;
         secondaryButton.canceled += SecondaryButtonCanceled;
+    }
+
+    private void ActivateActionPerformed(InputAction.CallbackContext obj)
+    {
+        activationPressed = true;
+       
+    }
+
+    private void ActivateActionCanceled(InputAction.CallbackContext obj)
+    {
+        activationPressed = false;
     }
 
     private void SecondaryButtonCanceled(InputAction.CallbackContext obj)
@@ -86,44 +102,34 @@ public class ActionController : MonoBehaviour
 
     private void SelectionActionCanceled(InputAction.CallbackContext obj)
     {
+        gripPressedValue = 0f;
         selectPressed = false;
     }
 
     private void SelectionActionPerformed(InputAction.CallbackContext obj)
     {
         selectPressed = true;
+        gripPressedValue = controller.selectAction.action.ReadValue<float>();
 
     }
 
     /*
     * All controller actions placed here
     */
-    private void ActivateActionPerformed(InputAction.CallbackContext obj)
-    {
-        if (handState == HandState.PLAYER)
-        {
-            character.GetComponent<CharacterMovement>().Jump();
-        }
-    }
+    
 
     private void TranslateActionPerformed(InputAction.CallbackContext obj)
     {
         handObject.transform.GetChild(1).gameObject.SetActive(false);
        
-        if (handState == HandState.PLAYER)
-        {
-            MoveCharacter();
-        }
-        else if (handState == HandState.INTERACT)
-        {
-
-        }
+        
+        MoveCharacter();
+        
     }
 
     private void TranslateActionCanceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        Debug.Log("canceled");
-        //lineRenderer.enabled = true;
+        lineRenderer.enabled = true;
         handObject.GetComponent<ArrowMovement>().SetEnabled(false);
         handObject.transform.GetChild(1).gameObject.SetActive(true);
         character.GetComponent<CharacterMovementWithAnimations>().EnterIdle();
@@ -132,7 +138,7 @@ public class ActionController : MonoBehaviour
     private void UIActionPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         ResetAttributes();
-        SwitchStates();
+       // SwitchStates();
     }
 
     /*
@@ -146,6 +152,7 @@ public class ActionController : MonoBehaviour
         character.GetComponent<CharacterMovementWithAnimations>().MoveCharacter(Vector2.zero);
     }
 
+    /**
     private void SwitchStates()
     {
         if (handState == HandState.INTERACT)
@@ -159,6 +166,7 @@ public class ActionController : MonoBehaviour
             handState = HandState.INTERACT;
         }
     }
+    **/
 
     private void MoveCharacter()
     {

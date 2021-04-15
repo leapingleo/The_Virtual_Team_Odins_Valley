@@ -20,7 +20,6 @@ public class InteractableCube : MonoBehaviour
     }
     public void Scale(Camera camera, Vector3 direction, Vector3 contactedFaceNormal, Vector3 dir, float moveAmount, Vector3 handPos)
     {
-        Debug.Log("grabed'");
         Vector3 heading = handPos - transform.position;
         var face = SelectionPicker.PickFace(camera, direction, mesh);
 
@@ -50,8 +49,6 @@ public class InteractableCube : MonoBehaviour
 
             if (handPos.z > transform.position.z)
                 contactedFaceNormal *= -1;
-
-
 
             // VertexPositioning.TranslateVertices(mesh, face.indexes, combine * moveAmount);
             VertexPositioning.TranslateVerticesInWorldSpace(mesh, indexs, contactedFaceNormal * moveAmount);

@@ -16,19 +16,6 @@ public class StayOnPlatform : MonoBehaviour
         
     }
 
-    //private void OnCollisionStay(Collision collision)
-    //{
-    //    if (collision.transform.CompareTag("Grabable") || collision.transform.CompareTag("Rotatable"))
-    //    {
-    //        Vector3 platformAt = collision.transform.position;
-    //        Vector3 offset = new Vector3(transform.position.x - platformAt.x, 0f, transform.position.z - platformAt.z);
-    //        Vector3 followPos = new Vector3(platformAt.x + offset.x, 
-    //               transform.position.y,
-    //               platformAt.z + offset.z);
-          
-    //        transform.position = followPos;
-    //    }
-    //}
 
     private void OnCollisionStay(Collision collision)
     {

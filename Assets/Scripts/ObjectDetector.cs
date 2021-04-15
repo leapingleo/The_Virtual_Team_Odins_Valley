@@ -12,16 +12,19 @@ public class ObjectDetector : MonoBehaviour
     private GameObject detectedObject;
     private Vector3 hitNormal;
     Vector3 cameraPoint = Vector3.zero;
+    public LineRenderer lineRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
         actionController = GetComponent<ActionController>();
+      //  lineRenderer = GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         RaycastHit hit;
         int layer = LayerMask.GetMask("Interactable");
 
@@ -32,12 +35,15 @@ public class ObjectDetector : MonoBehaviour
             hitNormal = hit.normal;
             //show where the ray hit on object's surface
             SetIndicatorPos(hit.point);
+            DrawIndicatorRay(transform.position, hit.point, 0.01f);
+
 
             if (detectedObject == null && actionController.MainButtonPressed)
             {
                 detectedObject = hit.transform.gameObject;
             }
         } else {
+            lineRenderer.enabled = false;
             SetIndicatorPos(new Vector3(999, 999, 999));
         }
 
@@ -93,8 +99,21 @@ public class ObjectDetector : MonoBehaviour
         lastHandPos = actionController.HandPos;
     }
 
-     void SetIndicatorPos(Vector3 pos)
+    void SetIndicatorPos(Vector3 pos)
     {
         indicatorSphere.transform.position = pos;
+        
+        indicatorSphere.transform.rotation = Quaternion.FromToRotation(Vector3.up, hitNormal);
+    }
+
+    void DrawIndicatorRay(Vector3 startPos, Vector3 endPos, float width)
+    {
+        lineRenderer.enabled = true;
+
+        lineRenderer.startWidth = width;
+        lineRenderer.endWidth = width;
+
+        lineRenderer.SetPosition(0, startPos);
+        lineRenderer.SetPosition(1, endPos);
     }
 }
