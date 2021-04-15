@@ -22,10 +22,18 @@ public class CharacterMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Debug.Log(Physics.gravity);
+        /**
         if (ActionController.Instance.ActivationPressed && !jumped)
         {
-           
+            jumped = true;
+            Jump();
+        }
+        **/
+        
+        if (ActionController.Instance.ActivationPressed && !jumped)
+        {
+            jumped = true;
+            Debug.Log(Physics.gravity);
             Jump();
             glideForce = jumpForce;
         }
@@ -46,6 +54,9 @@ public class CharacterMovement : MonoBehaviour
         }
         else
             rigidBody.MovePosition(transform.position + dir * speed * glideSpeed * Time.fixedDeltaTime);
+        
+        //dir = transform.rotation * dir;
+        //rigidBody.MovePosition(transform.position + dir * speed * glideSpeed * Time.fixedDeltaTime);
     }
 
     private void OnCollisionStay(Collision collision)
@@ -58,14 +69,13 @@ public class CharacterMovement : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         glideSpeed = glideDistanceFactor;
-        jumped = true;
     }
 
     public void MoveCharacter(Vector2 dir)
     {
         this.dir = new Vector3(dir.x, 0, dir.y);
         //Debug.Log(dir);
-        FacePosition(dir);
+       // FacePosition(dir);
 
         //transform.Translate(actualDir * speed * Time.fixedDeltaTime, Space.World);
         //  rigidBody.velocity = actualDir * speed * Time.fixedDeltaTime;
@@ -84,6 +94,7 @@ public class CharacterMovement : MonoBehaviour
     //Jump is called by action controller script
     public void Jump()
     {
-        rigidBody.AddForce(0, jumpForce, 0f, ForceMode.Impulse);
+        Vector3 antiGravity = Physics.gravity * -jumpForce;
+        rigidBody.AddForce(antiGravity, ForceMode.Impulse);
     }
 }

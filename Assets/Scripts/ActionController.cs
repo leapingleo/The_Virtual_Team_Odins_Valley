@@ -13,7 +13,6 @@ public class ActionController : MonoBehaviour
     public GameObject handObject;
     public GameObject character;
     private ActionBasedController controller;
-    private LineRenderer lineRenderer;
     public float gripPressedValue;
     private bool activationPressed;
     public bool ActivationPressed { get { return activationPressed; } }
@@ -33,7 +32,7 @@ public class ActionController : MonoBehaviour
         else
             Destroy(gameObject);
 
-        handObject.transform.GetChild(1).gameObject.SetActive(true);
+      //  handObject.transform.GetChild(1).gameObject.SetActive(true);
     }
 
     // Start is called before the first frame update
@@ -120,7 +119,7 @@ public class ActionController : MonoBehaviour
 
     private void TranslateActionPerformed(InputAction.CallbackContext obj)
     {
-        handObject.transform.GetChild(1).gameObject.SetActive(false);
+       // handObject.transform.GetChild(1).gameObject.SetActive(false);
        
         
         MoveCharacter();
@@ -129,10 +128,10 @@ public class ActionController : MonoBehaviour
 
     private void TranslateActionCanceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        lineRenderer.enabled = true;
-        handObject.GetComponent<ArrowMovement>().SetEnabled(false);
-        handObject.transform.GetChild(1).gameObject.SetActive(true);
-        character.GetComponent<CharacterMovementWithAnimations>().EnterIdle();
+      //  lineRenderer.enabled = true;
+      //  handObject.GetComponent<ArrowMovement>().SetEnabled(false);
+      //  handObject.transform.GetChild(1).gameObject.SetActive(true);
+       // character.GetComponent<CharacterMovementWithAnimations>().EnterIdle();
     }
 
     private void UIActionPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -174,7 +173,7 @@ public class ActionController : MonoBehaviour
         Vector3 vec3 = transform.TransformDirection(new Vector3(vec2.x, 0.0f, vec2.y));
         vec2.x = vec3.x;
         vec2.y = vec3.z;
-        character.GetComponent<CharacterMovementWithAnimations>().MoveCharacter(vec2);
+        character.GetComponent<CharacterMovement>().MoveCharacter(vec2);
         MoveArrow(vec2);
     }
 
