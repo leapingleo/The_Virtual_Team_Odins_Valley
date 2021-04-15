@@ -76,12 +76,13 @@ public class ActionController : MonoBehaviour
     private void SecondaryButtonCanceled(InputAction.CallbackContext obj)
     {
         secondaryButtonPressed = false;
-        character.GetComponent<CharacterMovementWithAnimations>().Attack();
+        
     }
 
     private void SecondaryButtonPerformed(InputAction.CallbackContext obj)
     {
         secondaryButtonPressed = true;
+        character.GetComponent<CharacterMovementWithAnimations>().Attack();
     }
 
     private void MainButtonCanceled(InputAction.CallbackContext obj)
@@ -173,7 +174,7 @@ public class ActionController : MonoBehaviour
         Vector3 vec3 = transform.TransformDirection(new Vector3(vec2.x, 0.0f, vec2.y));
         vec2.x = vec3.x;
         vec2.y = vec3.z;
-        character.GetComponent<CharacterMovement>().MoveCharacter(vec2);
+        character.GetComponent<CharacterMovementWithAnimations>().MoveCharacter(vec2);
         MoveArrow(vec2);
     }
 

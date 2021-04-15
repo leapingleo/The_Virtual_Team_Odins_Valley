@@ -30,7 +30,7 @@ public class CharacterMovement : MonoBehaviour
         }
         **/
         
-        if (ActionController.Instance.ActivationPressed && !jumped)
+        if (ActionController.Instance.MainButtonPressed && !jumped)
         {
             jumped = true;
             Debug.Log(Physics.gravity);
@@ -38,7 +38,7 @@ public class CharacterMovement : MonoBehaviour
             glideForce = jumpForce;
         }
 
-        if (jumped && ActionController.Instance.ActivationPressed)
+        if (jumped && ActionController.Instance.MainButtonPressed)
         {
             if (glideForce > 0f)
                 glideForce -= 0.6f;
@@ -62,7 +62,7 @@ public class CharacterMovement : MonoBehaviour
     private void OnCollisionStay(Collision collision)
     {
         glideSpeed = 1f;
-        if (!ActionController.Instance.ActivationPressed)
+        if (!ActionController.Instance.MainButtonPressed)
             jumped = false;
     }
 
