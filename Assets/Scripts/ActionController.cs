@@ -10,7 +10,8 @@ public class ActionController : MonoBehaviour
     public static ActionController Instance;
     public InputAction mainButton;
     public InputAction secondaryButton;
-    public GameObject handObject;
+    public InputAction joystick;
+    //public GameObject handObject;
     public GameObject character;
     private ActionBasedController controller;
     public float gripPressedValue;
@@ -27,10 +28,10 @@ public class ActionController : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
+      //  if (Instance == null)
+      //      Instance = this;
+       // else
+       //     Destroy(gameObject);
 
       //  handObject.transform.GetChild(1).gameObject.SetActive(true);
     }
@@ -41,8 +42,6 @@ public class ActionController : MonoBehaviour
         
         controller = GetComponent<ActionBasedController>();
 
-        controller.translateAnchorAction.action.performed += TranslateActionPerformed;
-        controller.translateAnchorAction.action.canceled += TranslateActionCanceled;
 
         controller.activateAction.action.performed += ActivateActionPerformed;
 
@@ -60,6 +59,10 @@ public class ActionController : MonoBehaviour
 
         secondaryButton.performed += SecondaryButtonPerformed;
         secondaryButton.canceled += SecondaryButtonCanceled;
+
+
+        joystick.performed += TranslateActionPerformed;
+        joystick.canceled += TranslateActionCanceled;
     }
 
     private void ActivateActionPerformed(InputAction.CallbackContext obj)
@@ -87,11 +90,13 @@ public class ActionController : MonoBehaviour
 
     private void MainButtonCanceled(InputAction.CallbackContext obj)
     {
+        Debug.Log("RELEASED");
         mainButtonPressed = false;
     }
 
     private void MainButtonPerformed(InputAction.CallbackContext obj)
     {
+        Debug.Log("PRESSED");
         mainButtonPressed = true;
     }
 
@@ -137,20 +142,21 @@ public class ActionController : MonoBehaviour
 
     private void UIActionPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        ResetAttributes();
+       // ResetAttributes();
        // SwitchStates();
     }
 
     /*
     * All external interactions placed here, might need to be modified later however.
     */
-
+    /**
     private void ResetAttributes()
     {
         handObject.GetComponent<HandObjectScript>().ResetRotation();
         handObject.GetComponent<ArrowMovement>().SetEnabled(false);
         character.GetComponent<CharacterMovementWithAnimations>().MoveCharacter(Vector2.zero);
     }
+    **/
 
     /**
     private void SwitchStates()
@@ -170,29 +176,31 @@ public class ActionController : MonoBehaviour
 
     private void MoveCharacter()
     {
-        Vector2 vec2 = controller.translateAnchorAction.action.ReadValue<Vector2>();
+        Vector2 vec2 = joystick.ReadValue<Vector2>();
         Vector3 vec3 = transform.TransformDirection(new Vector3(vec2.x, 0.0f, vec2.y));
         vec2.x = vec3.x;
         vec2.y = vec3.z;
         character.GetComponent<CharacterMovementWithAnimations>().MoveCharacter(vec2);
-        MoveArrow(vec2);
+      //  MoveArrow(vec2);
     }
 
     private void MoveArrow(Vector2 dir)
     {
-        handObject.GetComponent<ArrowMovement>().SetEnabled(true);
-        handObject.GetComponent<ArrowMovement>().FacePosition(dir);
+      //  handObject.GetComponent<ArrowMovement>().SetEnabled(true);
+      //  handObject.GetComponent<ArrowMovement>().FacePosition(dir);
     }
 
     void OnEnable()
     {
         mainButton.Enable();
         secondaryButton.Enable();
+        joystick.Enable();
     }
 
     void OnDisable()
     {
         mainButton.Disable();
         secondaryButton.Disable();
+        joystick.Disable();
     }
 }

@@ -6,7 +6,7 @@ public class ObjectDetector : MonoBehaviour
 {
     public float faceMoveSpeed;
     public float rotSpeed = 100f;
-    public GameObject indicatorSphere;
+    public GameObject aimIndicator;
     ActionController actionController;
     private Vector3 lastHandPos;
     private GameObject detectedObject;
@@ -101,9 +101,9 @@ public class ObjectDetector : MonoBehaviour
 
     void SetIndicatorPos(Vector3 pos)
     {
-        indicatorSphere.transform.position = pos;
+        aimIndicator.transform.position = pos;
         
-        indicatorSphere.transform.rotation = Quaternion.FromToRotation(Vector3.up, hitNormal);
+        aimIndicator.transform.rotation = Quaternion.FromToRotation(Vector3.up, hitNormal);
     }
 
     void DrawIndicatorRay(Vector3 startPos, Vector3 endPos, float width)

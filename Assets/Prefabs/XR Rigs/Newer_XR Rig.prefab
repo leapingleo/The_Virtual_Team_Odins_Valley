@@ -792,7 +792,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   faceMoveSpeed: 2
   rotSpeed: 3
-  indicatorSphere: {fileID: 0}
+  aimIndicator: {fileID: 0}
   lineRenderer: {fileID: 0}
 --- !u!1 &790199885021194219
 GameObject:
@@ -1345,7 +1345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   faceMoveSpeed: 2
   rotSpeed: 3
-  indicatorSphere: {fileID: 0}
+  aimIndicator: {fileID: 0}
   lineRenderer: {fileID: 790199884465908352}
 --- !u!114 &790199885174186167
 MonoBehaviour:
