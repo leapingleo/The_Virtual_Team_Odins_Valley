@@ -22,9 +22,8 @@ public class GravityModifier : MonoBehaviour
         if (hit.transform != null)
         {
            // Debug.Log(hit.transform.name + " hittt");
-            Debug.Log(hit.normal);
+         //   Debug.Log(hit.normal);
             normal = hit.normal;
-            Debug.Log(normal.z);
             Physics.gravity = new Vector3(normal.x * -9.8f, normal.y * -9.8f, normal.z * -9.8f);
             
         }

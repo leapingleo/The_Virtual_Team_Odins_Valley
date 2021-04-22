@@ -775,7 +775,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Secondary Button
       m_Flags: 0
-  handObject: {fileID: 790199884465908354}
+  joystick:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
   character: {fileID: 0}
   gripPressedValue: 0
 --- !u!114 &790199884776010236
@@ -1328,7 +1335,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Secondary Button
       m_Flags: 0
-  handObject: {fileID: 790199884465908354}
+  joystick:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
   character: {fileID: 0}
   gripPressedValue: 0
 --- !u!114 &790199885174186166

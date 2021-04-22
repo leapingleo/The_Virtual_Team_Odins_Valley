@@ -15,17 +15,63 @@ public class CharacterMovementWithAnimations : MonoBehaviour
     public GameObject leftAxe;
     public GameObject rightAxe;
 
+    Rigidbody rb;
+    Vector3 force;
+    Vector3 alignWithNormal;
+    private bool isGrounded;
+    private bool jumped;
+    private float yVelocity;
+
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        RaycastHit hit;
 
+        if (Physics.Raycast(transform.position, -transform.up, out hit))
+        {
+            if (!hit.collider.CompareTag("Player"))
+            {
+                force = -hit.normal;
+                alignWithNormal = hit.normal;
+            }
+
+        }
+       
+        Quaternion q = Quaternion.FromToRotation(Vector3.up, alignWithNormal);
+        Quaternion rotation = q; 
+        Vector3 rotateVector = rotation * dir;
+
+
+        transform.rotation = Quaternion.LookRotation(transform.up, alignWithNormal);
+
+
+        //if (isGrounded && ActionController.Instance.MainButtonPressed)
+        //{
+        //    isGrounded = false;
+        //    Debug.Log("once only");
+        //    rb.AddForce(-force, ForceMode.Impulse);
+        //}   else 
+        //    rb.AddForce(force);
+       
+
+       
+        rb.AddForce(force);
+
+          
         
-        rigidBody.MovePosition(transform.position + dir * speed * Time.fixedDeltaTime);
+        transform.rotation = Quaternion.LookRotation(rotateVector, alignWithNormal);
+        rigidBody.MovePosition(transform.position + rotateVector * speed * Time.fixedDeltaTime);
+
+
+
+
+
 
         if (dir == Vector3.zero && !anim.GetCurrentAnimatorStateInfo(0).IsName("idle"))
         {
@@ -38,8 +84,6 @@ public class CharacterMovementWithAnimations : MonoBehaviour
         //    anim.SetTrigger("idle");
         //}
 
-        
-
     }
 
     public void Attack()
@@ -47,7 +91,17 @@ public class CharacterMovementWithAnimations : MonoBehaviour
         anim.SetTrigger("attack");
     }
 
-    
+    private void OnCollisionStay(Collision collision)
+    {
+        isGrounded = true;
+        jumped = false;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        isGrounded = false;
+    }
+
 
     public void MoveCharacter(Vector2 dir)
     {
@@ -61,7 +115,7 @@ public class CharacterMovementWithAnimations : MonoBehaviour
 
         this.dir = new Vector3(dir.x, 0, dir.y);
         
-        FacePosition(dir);
+      //  FacePosition(dir);
 
         //transform.Translate(actualDir * speed * Time.fixedDeltaTime, Space.World);
         //  rigidBody.velocity = actualDir * speed * Time.fixedDeltaTime;
@@ -79,14 +133,17 @@ public class CharacterMovementWithAnimations : MonoBehaviour
         //Vector3 currentPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         //Vector3 facePos = currentPos + newPos;
         //facePos.y = transform.position.y;
-        //transform.LookAt(facePos);
-        transform.rotation = Quaternion.LookRotation(new Vector3(toFace.x, 0f, toFace.y));
+        //   Vector3 face = new Vector3(toFace.x, 0f, toFace.y);
+        //  transform.LookAt(new Vector3(toFace.x, 0f, toFace.y));
+        //  transform.rotation = Quaternion.LookRotation(face, alignWithNormal);
+        // 
+        transform.rotation = Quaternion.LookRotation(new Vector3(toFace.x, 0f, toFace.y), alignWithNormal);
     }
 
     //Jump is called by action controller script
     public void Jump()
     {
-        rigidBody.AddForce(0, jumpForce, 0f, ForceMode.Impulse);
+       // rigidBody.AddForce(0, jumpForce, 0f, ForceMode.Impulse);
     }
 
     public void TurnOnAxeCollsions(string hand, bool turnOn)

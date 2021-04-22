@@ -28,10 +28,10 @@ public class ActionController : MonoBehaviour
 
     void Awake()
     {
-      //  if (Instance == null)
-      //      Instance = this;
-       // else
-       //     Destroy(gameObject);
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
 
       //  handObject.transform.GetChild(1).gameObject.SetActive(true);
     }
@@ -90,13 +90,13 @@ public class ActionController : MonoBehaviour
 
     private void MainButtonCanceled(InputAction.CallbackContext obj)
     {
-        Debug.Log("RELEASED");
+      //  Debug.Log("RELEASED");
         mainButtonPressed = false;
     }
 
     private void MainButtonPerformed(InputAction.CallbackContext obj)
     {
-        Debug.Log("PRESSED");
+       // Debug.Log("PRESSED");
         mainButtonPressed = true;
     }
 
@@ -176,6 +176,7 @@ public class ActionController : MonoBehaviour
 
     private void MoveCharacter()
     {
+            
         Vector2 vec2 = joystick.ReadValue<Vector2>();
         Vector3 vec3 = transform.TransformDirection(new Vector3(vec2.x, 0.0f, vec2.y));
         vec2.x = vec3.x;
