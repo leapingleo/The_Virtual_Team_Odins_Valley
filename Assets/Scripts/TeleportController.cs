@@ -22,7 +22,7 @@ public class TeleportController : MonoBehaviour
     {
         if (ActionController.Instance.gripPressedValue > 0.2f)
         {
-            Debug.Log(ActionController.Instance.gripPressedValue);
+            //Debug.Log(ActionController.Instance.gripPressedValue);
             lineRenderer.enabled = true;
             lineVisual.enabled = true;
             xRRayInteractor.enabled = true;

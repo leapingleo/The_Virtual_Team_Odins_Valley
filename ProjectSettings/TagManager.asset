@@ -12,17 +12,21 @@ TagManager:
   - Platform
   - Throwable
   - ShurikenWall
+  - Odin
+  - Collectible
+  - Axe
+  - Crate
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Enviroment
   - Water
   - UI
   - Interactable
-  - 
-  - 
-  - 
+  - Player
+  - Destructible
+  - GrabThrow
   - 
   - 
   - 

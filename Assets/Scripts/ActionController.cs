@@ -10,28 +10,41 @@ public class ActionController : MonoBehaviour
     public static ActionController Instance;
     public InputAction mainButton;
     public InputAction secondaryButton;
+    public InputAction triggerButton;
     public GameObject handObject;
-    public GameObject character;
+    //public CharacterMovement character;
     private ActionBasedController controller;
     public float gripPressedValue;
     private bool activationPressed;
     public bool ActivationPressed { get { return activationPressed; } }
     private bool mainButtonPressed;
     public bool MainButtonPressed { get { return mainButtonPressed; } }
+
+    private bool mainButtonReleased;
+    public bool MainButtonReleased { get { return mainButtonReleased; } }
+
     private bool secondaryButtonPressed;
     public bool SecondaryButtonPressed { get { return secondaryButtonPressed; } }
     private bool selectPressed;
+
+    private bool triggerButtonPressed;
+    public bool TriggerButtonPressed { get { return triggerButtonPressed; } }
+
+    private bool triggerButtonReleased;
+    public bool TriggerButtonReleased { get { return triggerButtonReleased; } }
+
+    private bool secondaryButtonReleased;
+    public bool SecondaryButtonReleased { get { return secondaryButtonReleased;  } }
     public bool SelectPressed { get { return selectPressed; } }
     private Vector3 handPos;
     public Vector3 HandPos { get { return handPos; } }
 
+    private Vector3 joystickDirection;
+    public Vector3 JoystickDirection { get { return joystickDirection; } }
+
+
     void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
-
       //  handObject.transform.GetChild(1).gameObject.SetActive(true);
     }
 
@@ -44,10 +57,9 @@ public class ActionController : MonoBehaviour
         controller.translateAnchorAction.action.performed += TranslateActionPerformed;
         controller.translateAnchorAction.action.canceled += TranslateActionCanceled;
 
-        controller.activateAction.action.performed += ActivateActionPerformed;
+        controller.activateAction.action.performed += TriggerActionPerformed;
 
-        controller.activateAction.action.canceled += ActivateActionCanceled;
-
+        controller.activateAction.action.canceled += TriggerActionCanceled;
 
         // pushing down the joystick will activate this.
         controller.uiPressAction.action.performed += UIActionPerformed;
@@ -57,14 +69,49 @@ public class ActionController : MonoBehaviour
         controller.positionAction.action.performed += PositionPerformed;
         mainButton.performed += MainButtonPerformed;
         mainButton.canceled += MainButtonCanceled;
+        //controller.uiPressAction.action.performed += TriggerActionPerformed;
+        //controller.uiPressAction.action.canceled += TriggerActionCanceled;
+        //triggerButton.performed += TriggerActionPerformed;
+        //triggerButton.canceled += TriggerActionCanceled;
 
         secondaryButton.performed += SecondaryButtonPerformed;
         secondaryButton.canceled += SecondaryButtonCanceled;
     }
 
+    //private void LateUpdate()
+    //{
+    //    if (mainButtonReleased)
+    //    {
+    //        //Debug.Log("True");
+    //    }
+
+
+    //    mainButtonReleased = false;
+    //    secondaryButtonReleased = false;
+    //}
+
+    private void Update()
+    {
+        triggerButtonReleased = false;
+    }
+
+    private void TriggerActionPerformed(InputAction.CallbackContext obj)
+    {
+        triggerButtonPressed = true;
+    }
+
+    
+
+    private void TriggerActionCanceled(InputAction.CallbackContext obj)
+    {
+        triggerButtonPressed = false;
+        triggerButtonReleased = true;
+        StartCoroutine(TurnOffTriggerButtonRelease(0.1f));
+    }
+
     private void ActivateActionPerformed(InputAction.CallbackContext obj)
     {
-        activationPressed = true;
+        
        
     }
 
@@ -76,18 +123,22 @@ public class ActionController : MonoBehaviour
     private void SecondaryButtonCanceled(InputAction.CallbackContext obj)
     {
         secondaryButtonPressed = false;
-        
+        secondaryButtonReleased = true;
+        StartCoroutine(TurnOffSecondaryButtonRelease(0.00001f));
     }
 
     private void SecondaryButtonPerformed(InputAction.CallbackContext obj)
     {
         secondaryButtonPressed = true;
-        character.GetComponent<CharacterMovementWithAnimations>().Attack();
+        //character.GetComponent<CharacterMovementWithAnimations>().Attack();
     }
 
     private void MainButtonCanceled(InputAction.CallbackContext obj)
     {
         mainButtonPressed = false;
+        mainButtonReleased = true;
+        StartCoroutine(TurnOffMainButtonRelease(0.1f));
+
     }
 
     private void MainButtonPerformed(InputAction.CallbackContext obj)
@@ -120,19 +171,19 @@ public class ActionController : MonoBehaviour
 
     private void TranslateActionPerformed(InputAction.CallbackContext obj)
     {
-       // handObject.transform.GetChild(1).gameObject.SetActive(false);
-       
-        
-        MoveCharacter();
-        
+        // handObject.transform.GetChild(1).gameObject.SetActive(false);
+        Vector2 vec2 = controller.translateAnchorAction.action.ReadValue<Vector2>();
+        joystickDirection = transform.TransformDirection(new Vector3(vec2.x, 0.0f, vec2.y));
+        joystickDirection.y = 0f;
     }
 
     private void TranslateActionCanceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-      //  lineRenderer.enabled = true;
-      //  handObject.GetComponent<ArrowMovement>().SetEnabled(false);
-      //  handObject.transform.GetChild(1).gameObject.SetActive(true);
-       // character.GetComponent<CharacterMovementWithAnimations>().EnterIdle();
+        joystickDirection = Vector3.zero;
+        //  lineRenderer.enabled = true;
+        //  handObject.GetComponent<ArrowMovement>().SetEnabled(false);
+        //  handObject.transform.GetChild(1).gameObject.SetActive(true);
+        // character.GetComponent<CharacterMovementWithAnimations>().EnterIdle();
     }
 
     private void UIActionPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -147,9 +198,6 @@ public class ActionController : MonoBehaviour
 
     private void ResetAttributes()
     {
-        handObject.GetComponent<HandObjectScript>().ResetRotation();
-        handObject.GetComponent<ArrowMovement>().SetEnabled(false);
-        character.GetComponent<CharacterMovementWithAnimations>().MoveCharacter(Vector2.zero);
     }
 
     /**
@@ -168,20 +216,31 @@ public class ActionController : MonoBehaviour
     }
     **/
 
-    private void MoveCharacter()
+    //private void MoveCharacter()
+    //{
+    //    Vector2 vec2 = controller.translateAnchorAction.action.ReadValue<Vector2>();
+    //    Vector3 vec3 = transform.TransformDirection(new Vector3(vec2.x, 0.0f, vec2.y));
+    //    vec2.x = vec3.x;
+    //    vec2.y = vec3.z;
+    //    character.GetComponent<CharacterMovementWithAnimations>().MoveCharacter(vec2);
+    //}
+
+    IEnumerator TurnOffMainButtonRelease(float waitTime)
     {
-        Vector2 vec2 = controller.translateAnchorAction.action.ReadValue<Vector2>();
-        Vector3 vec3 = transform.TransformDirection(new Vector3(vec2.x, 0.0f, vec2.y));
-        vec2.x = vec3.x;
-        vec2.y = vec3.z;
-        character.GetComponent<CharacterMovementWithAnimations>().MoveCharacter(vec2);
-        MoveArrow(vec2);
+        yield return new WaitForSeconds(waitTime);
+        mainButtonReleased = false;
     }
 
-    private void MoveArrow(Vector2 dir)
+    IEnumerator TurnOffTriggerButtonRelease(float waitTime)
     {
-        handObject.GetComponent<ArrowMovement>().SetEnabled(true);
-        handObject.GetComponent<ArrowMovement>().FacePosition(dir);
+        yield return new WaitForSeconds(waitTime);
+        triggerButtonReleased = false;
+    }
+
+    IEnumerator TurnOffSecondaryButtonRelease(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        secondaryButtonReleased = false;
     }
 
     void OnEnable()

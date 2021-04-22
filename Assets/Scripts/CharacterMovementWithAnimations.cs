@@ -127,4 +127,6 @@ public class CharacterMovementWithAnimations : MonoBehaviour
     {
         rightAxe.GetComponent<AxeCollision>().TurnOffCollider();
     }
+
+    
 }

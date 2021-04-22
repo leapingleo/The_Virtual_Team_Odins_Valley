@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7352980465321124558}
   - component: {fileID: 7774515408752542373}
   - component: {fileID: 7267163808838784078}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Shuriken
   m_TagString: Throwable
   m_Icon: {fileID: 0}
@@ -50,6 +50,8 @@ MonoBehaviour:
   bc: {fileID: 7774515408752542373}
   moveToSpeed: 100
   moveAwaySpeed: 400
+  canBeGrabThrown: 1
+  grabbed: 0
   rotationSpeed: 10
 --- !u!65 &7774515408752542373
 BoxCollider:

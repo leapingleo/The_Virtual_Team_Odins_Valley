@@ -19,13 +19,13 @@ public class ObjectDetectorGrabThrow : MonoBehaviour
     void FixedUpdate()
     {
         RaycastHit hit;
-        int layer = LayerMask.GetMask("Interactable");
+        int layer = LayerMask.GetMask("GrabThrow");
 
         if (Physics.Raycast(transform.position, transform.forward, out hit, 3, layer))
         {
             //show where the ray hit on object's surface
             SetIndicatorPos(hit.point);
-            if (detectedObject == null && actionController.MainButtonPressed)
+            if (detectedObject == null && actionController.TriggerButtonPressed)
             {
                 detectedObject = hit.transform.gameObject;
             }
@@ -33,15 +33,15 @@ public class ObjectDetectorGrabThrow : MonoBehaviour
             SetIndicatorPos(new Vector3(999, 999, 999));
         }
 
-        if (actionController.MainButtonPressed && detectedObject != null)
+        if (actionController.TriggerButtonPressed && detectedObject != null)
         {
-            if (detectedObject.CompareTag("Throwable") && detectedObject.GetComponent<GrabThrow>().canBeGrabThrown)
+            if (detectedObject.GetComponent<GrabThrow>().canBeGrabThrown)
                 GrabObject(detectedObject);
             else
                 detectedObject = null;
         }
         //if holding on to object and release, it will shoot it.
-        else if (!actionController.MainButtonPressed && detectedObject != null && detectedObject.CompareTag("Throwable"))
+        else if (!actionController.TriggerButtonPressed && detectedObject != null)
         {
             RaycastHit shootHit;
             if (Physics.Raycast(transform.position, transform.forward, out shootHit, shootDistance))
