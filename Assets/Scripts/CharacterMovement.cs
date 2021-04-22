@@ -6,8 +6,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class CharacterMovement : MonoBehaviour
 {
-    private ActionBasedController leftController;
-    private ActionBasedController rightController;
+   // private ActionBasedController leftController;
+   // private ActionBasedController rightController;
 
     private float speed;
     public float jumpForce;
@@ -27,10 +27,10 @@ public class CharacterMovement : MonoBehaviour
     public bool tristanHanded;
     public Animator anim;
     public Transform groundCheckTransform;
-    public ActionController leftActionController;
-    public ActionController rightActionController;
-    private ActionController acMovement;
-    private ActionController acButtons;
+   // public ActionController leftActionController;
+   // public ActionController rightActionController;
+   // private ActionController acMovement;
+   // private ActionController acButtons;
 
     public GameObject leftAxe;
     public GameObject rightAxe;
@@ -43,6 +43,7 @@ public class CharacterMovement : MonoBehaviour
         jumping = false;
         canCheckGround = false;
 
+        /*
         if (tristanHanded)
         {
             acMovement = leftActionController;
@@ -54,6 +55,7 @@ public class CharacterMovement : MonoBehaviour
             acMovement = rightActionController;
             acButtons = leftActionController;
         }
+        **/
 
 
     }
@@ -67,7 +69,7 @@ public class CharacterMovement : MonoBehaviour
         }
 
 
-        if (!jumping && acButtons.MainButtonReleased)
+        if (!jumping && ActionController.Instance.MainButtonReleased)
         {
             //Debug.Log("True");
             Jump();
@@ -104,7 +106,7 @@ public class CharacterMovement : MonoBehaviour
             }
         }
 
-        if (!jumping && acButtons.SecondaryButtonReleased)
+        if (!jumping && ActionController.Instance.SecondaryButtonReleased)
         {
             anim.SetTrigger("attack");
         }
@@ -124,12 +126,12 @@ public class CharacterMovement : MonoBehaviour
         }
 
 
-        if (acMovement.JoystickDirection != Vector3.zero)
+        if (ActionController.Instance.JoystickDirection != Vector3.zero)
         {
             anim.SetTrigger("walk");
             
-            rigidBody.MovePosition(transform.position + acMovement.JoystickDirection * speed * Time.fixedDeltaTime);
-            FacePosition(acMovement.JoystickDirection);
+            rigidBody.MovePosition(transform.position + ActionController.Instance.JoystickDirection * speed * Time.fixedDeltaTime);
+            FacePosition(ActionController.Instance.JoystickDirection);
         }
         else
         {
@@ -168,11 +170,11 @@ public class CharacterMovement : MonoBehaviour
         else
             glideForce = -0.5f;
 
-        if (acMovement.JoystickDirection != Vector3.zero)
+        if (ActionController.Instance.JoystickDirection != Vector3.zero)
         {
             rigidBody.velocity = new Vector3(rigidBody.velocity.x, glideForce, rigidBody.velocity.z);
-            rigidBody.MovePosition(transform.position + acMovement.JoystickDirection * speed * glideSpeed * Time.fixedDeltaTime);
-            FacePosition(acMovement.JoystickDirection);
+            rigidBody.MovePosition(transform.position + ActionController.Instance.JoystickDirection * speed * glideSpeed * Time.fixedDeltaTime);
+            FacePosition(ActionController.Instance.JoystickDirection);
         }
     }
 
@@ -183,14 +185,14 @@ public class CharacterMovement : MonoBehaviour
             SetGliding(false);
         }
 
-        if (acMovement.JoystickDirection != Vector3.zero)
+        if (ActionController.Instance.JoystickDirection != Vector3.zero)
         {
             
             rigidBody.velocity = new Vector3(rigidBody.velocity.x, rigidBody.velocity.y, rigidBody.velocity.z);
-            rigidBody.velocity += acMovement.JoystickDirection * 0.001f;
+            rigidBody.velocity += ActionController.Instance.JoystickDirection * 0.001f;
             //rigidBody.velocity = 
             //rigidBody.MovePosition(transform.position + acMovement.JoystickDirection * speed * glideSpeed * Time.fixedDeltaTime);
-            FacePosition(acMovement.JoystickDirection);
+            FacePosition(ActionController.Instance.JoystickDirection);
         }
         
     }

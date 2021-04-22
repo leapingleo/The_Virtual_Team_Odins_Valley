@@ -10,10 +10,11 @@ public class ActionController : MonoBehaviour
     public static ActionController Instance;
     public InputAction mainButton;
     public InputAction secondaryButton;
+    public InputAction joystick;
     public InputAction triggerButton;
+    public InputAction controllerPos;
     public GameObject handObject;
     //public CharacterMovement character;
-    private ActionBasedController controller;
     public float gripPressedValue;
     private bool activationPressed;
     public bool ActivationPressed { get { return activationPressed; } }
@@ -45,34 +46,36 @@ public class ActionController : MonoBehaviour
 
     void Awake()
     {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
       //  handObject.transform.GetChild(1).gameObject.SetActive(true);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
-        controller = GetComponent<ActionBasedController>();
-
-        controller.translateAnchorAction.action.performed += TranslateActionPerformed;
-        controller.translateAnchorAction.action.canceled += TranslateActionCanceled;
-
-        controller.activateAction.action.performed += TriggerActionPerformed;
-
-        controller.activateAction.action.canceled += TriggerActionCanceled;
 
         // pushing down the joystick will activate this.
-        controller.uiPressAction.action.performed += UIActionPerformed;
+        // controller.uiPressAction.action.performed += UIActionPerformed;
 
-        controller.selectAction.action.performed += SelectionActionPerformed;
-        controller.selectAction.action.canceled += SelectionActionCanceled;
-        controller.positionAction.action.performed += PositionPerformed;
-        mainButton.performed += MainButtonPerformed;
-        mainButton.canceled += MainButtonCanceled;
+        // controller.selectAction.action.performed += SelectionActionPerformed;
+        //  controller.selectAction.action.canceled += SelectionActionCanceled;
+
         //controller.uiPressAction.action.performed += TriggerActionPerformed;
         //controller.uiPressAction.action.canceled += TriggerActionCanceled;
-        //triggerButton.performed += TriggerActionPerformed;
-        //triggerButton.canceled += TriggerActionCanceled;
+        controllerPos.performed += PositionPerformed;
+
+        joystick.performed += TranslateActionPerformed;
+        joystick.canceled += TranslateActionCanceled;
+
+        mainButton.performed += MainButtonPerformed;
+        mainButton.canceled += MainButtonCanceled;
+        
+        triggerButton.performed += TriggerActionPerformed;
+        triggerButton.canceled += TriggerActionCanceled;
 
         secondaryButton.performed += SecondaryButtonPerformed;
         secondaryButton.canceled += SecondaryButtonCanceled;
@@ -148,7 +151,7 @@ public class ActionController : MonoBehaviour
 
     private void PositionPerformed(InputAction.CallbackContext obj)
     {
-        handPos = controller.positionAction.action.ReadValue<Vector3>();
+        handPos = controllerPos.ReadValue<Vector3>();
     }
 
     private void SelectionActionCanceled(InputAction.CallbackContext obj)
@@ -160,7 +163,7 @@ public class ActionController : MonoBehaviour
     private void SelectionActionPerformed(InputAction.CallbackContext obj)
     {
         selectPressed = true;
-        gripPressedValue = controller.selectAction.action.ReadValue<float>();
+      //  gripPressedValue = controller.selectAction.action.ReadValue<float>();
 
     }
 
@@ -172,7 +175,7 @@ public class ActionController : MonoBehaviour
     private void TranslateActionPerformed(InputAction.CallbackContext obj)
     {
         // handObject.transform.GetChild(1).gameObject.SetActive(false);
-        Vector2 vec2 = controller.translateAnchorAction.action.ReadValue<Vector2>();
+        Vector2 vec2 = joystick.ReadValue<Vector2>();
         joystickDirection = transform.TransformDirection(new Vector3(vec2.x, 0.0f, vec2.y));
         joystickDirection.y = 0f;
     }
@@ -247,11 +250,15 @@ public class ActionController : MonoBehaviour
     {
         mainButton.Enable();
         secondaryButton.Enable();
+        triggerButton.Enable();
+        joystick.Enable();
     }
 
     void OnDisable()
     {
         mainButton.Disable();
         secondaryButton.Disable();
+        triggerButton.Disable();
+        joystick.Disable();
     }
 }

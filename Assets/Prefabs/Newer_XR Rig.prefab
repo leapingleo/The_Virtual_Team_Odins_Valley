@@ -777,7 +777,23 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Secondary Button
       m_Flags: 0
+  joystick:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
   triggerButton:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+  ControllerPos:
     m_Name: 
     m_Type: 0
     m_ExpectedControlType: 
@@ -1365,7 +1381,23 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Secondary Button
       m_Flags: 0
+  joystick:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
   triggerButton:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+  ControllerPos:
     m_Name: 
     m_Type: 0
     m_ExpectedControlType: 

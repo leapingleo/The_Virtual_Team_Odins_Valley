@@ -6,13 +6,12 @@ public class ObjectDetectorGrabThrow : MonoBehaviour
 {
     public float shootDistance;
     public GameObject indicatorSphere;
-    ActionController actionController;
     private GameObject detectedObject;
 
     // Start is called before the first frame update
     void Start()
     {
-        actionController = GetComponent<ActionController>();
+        
     }
 
     // Update is called once per frame
@@ -25,7 +24,7 @@ public class ObjectDetectorGrabThrow : MonoBehaviour
         {
             //show where the ray hit on object's surface
             SetIndicatorPos(hit.point);
-            if (detectedObject == null && actionController.TriggerButtonPressed)
+            if (detectedObject == null && ActionController.Instance.TriggerButtonPressed)
             {
                 detectedObject = hit.transform.gameObject;
             }
@@ -33,7 +32,7 @@ public class ObjectDetectorGrabThrow : MonoBehaviour
             SetIndicatorPos(new Vector3(999, 999, 999));
         }
 
-        if (actionController.TriggerButtonPressed && detectedObject != null)
+        if (ActionController.Instance.TriggerButtonPressed && detectedObject != null)
         {
             if (detectedObject.GetComponent<GrabThrow>().canBeGrabThrown)
                 GrabObject(detectedObject);
@@ -41,7 +40,7 @@ public class ObjectDetectorGrabThrow : MonoBehaviour
                 detectedObject = null;
         }
         //if holding on to object and release, it will shoot it.
-        else if (!actionController.TriggerButtonPressed && detectedObject != null)
+        else if (!ActionController.Instance.TriggerButtonPressed && detectedObject != null)
         {
             RaycastHit shootHit;
             if (Physics.Raycast(transform.position, transform.forward, out shootHit, shootDistance))

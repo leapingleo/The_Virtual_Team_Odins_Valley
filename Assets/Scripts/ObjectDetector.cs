@@ -38,7 +38,7 @@ public class ObjectDetector : MonoBehaviour
             DrawIndicatorRay(transform.position, hit.point, 0.01f);
 
 
-            if (detectedObject == null && actionController.ActivationPressed)
+            if (detectedObject == null && ActionController.Instance.ActivationPressed)
             {
                 detectedObject = hit.transform.gameObject;
             }
@@ -47,7 +47,7 @@ public class ObjectDetector : MonoBehaviour
             SetIndicatorPos(new Vector3(999, 999, 999));
         }
 
-        if (actionController.ActivationPressed && detectedObject != null)
+        if (ActionController.Instance.ActivationPressed && detectedObject != null)
         {
             if (detectedObject.CompareTag("Grabable"))
                 MoveObj(detectedObject);
@@ -60,12 +60,12 @@ public class ObjectDetector : MonoBehaviour
         else {
             detectedObject = null;
         }
-        lastHandPos = actionController.HandPos;
+        lastHandPos = ActionController.Instance.HandPos;
     }
 
     void RotateObject(GameObject obj)
     {
-        Vector3 diff = actionController.HandPos - lastHandPos;
+        Vector3 diff = ActionController.Instance.HandPos - lastHandPos;
         Vector3 moveDir = diff * 100f;
         
         obj.GetComponent<InteractableCube>().Rotate(moveDir, rotSpeed);
@@ -73,20 +73,20 @@ public class ObjectDetector : MonoBehaviour
 
     void MoveObj(GameObject obj)
     {
-        Vector3 dir = actionController.HandPos - lastHandPos;
+        Vector3 dir = ActionController.Instance.HandPos - lastHandPos;
         obj.GetComponent<InteractableCube>().SetAtNewPos(dir);
     }
 
     void DetectFace(GameObject obj)
     {
-        if (!actionController.MainButtonPressed)
+        if (!ActionController.Instance.MainButtonPressed)
         {
             //always updating lasthandPos, even select not pressed, or endup with huge diff
-            lastHandPos = actionController.HandPos;
+            lastHandPos = ActionController.Instance.HandPos;
             return;
         }
         //how much controller moved in one frame
-        Vector3 diff = actionController.HandPos - lastHandPos;
+        Vector3 diff = ActionController.Instance.HandPos - lastHandPos;
         Vector3 faceMoveDir = diff.normalized;
         float diffAmount = diff.magnitude;
 
@@ -96,7 +96,7 @@ public class ObjectDetector : MonoBehaviour
             obj.GetComponent<InteractableCube>().Scale(Camera.main,
                 cameraPoint, hitNormal, faceMoveDir, diffAmount * faceMoveSpeed, transform.position);
         }
-        lastHandPos = actionController.HandPos;
+        lastHandPos = ActionController.Instance.HandPos;
     }
 
     void SetIndicatorPos(Vector3 pos)
