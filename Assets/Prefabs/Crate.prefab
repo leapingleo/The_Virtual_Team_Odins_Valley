@@ -5950,10 +5950,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 3992000153747101308}
   bc: {fileID: 3805235044155921858}
-  moveToSpeed: 100
-  moveAwaySpeed: 400
+  moveToSpeed: 50
+  moveAwaySpeed: 100
+  respawnTime: 0
+  angularVelocityMultiplier: 80
   canBeGrabThrown: 1
+  respawn: 0
   grabbed: 0
+  collided: 0
   collectible: {fileID: 8558824345279697991, guid: 2c27fc16e4984904daf7558198072836, type: 3}
   numCollectibles: 10
 --- !u!54 &3992000153747101308

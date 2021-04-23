@@ -793,7 +793,7 @@ MonoBehaviour:
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
-  ControllerPos:
+  controllerPos:
     m_Name: 
     m_Type: 0
     m_ExpectedControlType: 
@@ -1397,7 +1397,7 @@ MonoBehaviour:
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
-  ControllerPos:
+  controllerPos:
     m_Name: 
     m_Type: 0
     m_ExpectedControlType: 

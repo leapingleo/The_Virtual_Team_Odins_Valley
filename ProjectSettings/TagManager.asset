@@ -16,6 +16,7 @@ TagManager:
   - Collectible
   - Axe
   - Crate
+  - DoorOrb
   layers:
   - Default
   - TransparentFX

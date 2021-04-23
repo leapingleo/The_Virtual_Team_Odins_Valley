@@ -22,9 +22,21 @@ public class Crate : GrabThrow
         }
     }
 
+
+
+
     private void OnCollisionEnter(Collision collision)
     {
         if (grabbed)
+        {
+            GetComponent<BoxCollider>().enabled = false;
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(true);
+            StartCoroutine(DestroyObjects(0.125f, 0.75f));
+            StartCoroutine(ReleaseCollectibles(0.085f));
+        }
+
+        if (!grabbed && collision.gameObject.layer == 9 && collision.gameObject.GetComponent<GrabThrow>().grabbed)
         {
             GetComponent<BoxCollider>().enabled = false;
             transform.GetChild(0).gameObject.SetActive(false);

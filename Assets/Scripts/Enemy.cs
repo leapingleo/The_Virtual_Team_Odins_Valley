@@ -165,7 +165,7 @@ public class Enemy : GrabThrow
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Throwable") && collision.gameObject.GetComponent<GrabThrow>().grabbed)
+        if (collision.gameObject.layer == 9 && collision.gameObject.GetComponent<GrabThrow>().grabbed)
         {
             GetHit(5);
         }

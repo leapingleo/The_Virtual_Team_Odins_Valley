@@ -8,32 +8,25 @@ public class GrabThrow : MonoBehaviour
     public BoxCollider bc;
     public float moveToSpeed;
     public float moveAwaySpeed;
-
+    public float respawnTime;
+    public float angularVelocityMultiplier;
+    
     public bool canBeGrabThrown = true;
+    public bool respawn = false;
     public bool grabbed = false;
     private bool moveToHandInit = true;
     private bool moveAwayHandInit = true;
     private bool movedToHand = false;
+    public bool collided = false;
+    private Transform initialTransform;
 
-
-    private void FixedUpdate()
+    private void Start()
     {
-        //if (releasePosition != Vector3.zero)
-        //{
-        //    MoveToReleasePosition(releasePosition);
-        //    RaycastHit hit;
-        //    if (Physics.Linecast(previousPosition, transform.position, out hit))
-        //    {
-        //        ObjectThrown();
-        //    }
-        //    else if (lerpHelper.Finished())
-        //    {
-        //        ObjectThrown();
-        //    }
-
-        //    previousPosition = transform.position;
-        //}
+        initialTransform = transform;
     }
+
+
+
 
     public void MoveToHand(Transform controller)
     {
@@ -63,14 +56,17 @@ public class GrabThrow : MonoBehaviour
 
     public void MoveToReleasePosition(Vector3 point)
     {
-        if (moveAwayHandInit)
+        if (!collided)
         {
-            MoveAwayHandInit();
-            moveAwayHandInit = false;
-        }
+            if (moveAwayHandInit)
+            {
+                MoveAwayHandInit();
+                moveAwayHandInit = false;
+            }
 
-        WhileMoving();
-        rb.velocity = (point - transform.position).normalized * moveAwaySpeed * Time.fixedDeltaTime;
+            WhileMoving();
+            rb.velocity = (point - transform.position).normalized * moveAwaySpeed * Time.fixedDeltaTime;
+        }
     }
 
     public virtual void MovedToHandInit(Transform controller)
@@ -83,6 +79,7 @@ public class GrabThrow : MonoBehaviour
 
     public virtual void MoveToHandInit()
     {
+        rb.angularVelocity = transform.up * angularVelocityMultiplier * Time.fixedDeltaTime;
         bc.enabled = false;
         rb.useGravity = false;
     }
@@ -102,15 +99,48 @@ public class GrabThrow : MonoBehaviour
     public virtual void Collision(Collision collision)
     {
         gameObject.SetActive(false);
+
+        //if (respawn)
+        //{
+        //    transform.GetChild(0).gameObject.SetActive(false);
+        //    //StartCoroutine(Respawn(respawnTime));
+        //    BecomeRespawned();
+        //}
+        //else
+        //{
+        //    gameObject.SetActive(false);
+        //}
+    }
+
+    public virtual void BecomeRespawned()
+    {
+        canBeGrabThrown = true;
+        grabbed = false;
+        moveToHandInit = true;
+        moveAwayHandInit = true;
+        movedToHand = false;
+        bc.enabled = true;
+        rb.useGravity = true;
+        rb.angularVelocity = Vector3.zero;
+        collided = false;
+        transform.GetChild(0).gameObject.SetActive(true);
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (!moveAwayHandInit)
+        if (grabbed)
+        {
+            collided = true;
             Collision(collision);
+        }
+        
     }
 
-
+    IEnumerator Respawn(float respawnTime)
+    {
+        yield return new WaitForSeconds(respawnTime);
+        BecomeRespawned();    
+    }
 
 
 }

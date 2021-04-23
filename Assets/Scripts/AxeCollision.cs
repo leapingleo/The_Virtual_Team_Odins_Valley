@@ -38,12 +38,12 @@ public class AxeCollision : MonoBehaviour
 
             if (other.CompareTag("Crate"))
             {
-                Crate crateScript = other.gameObject.GetComponent<Crate>();
+                other.gameObject.GetComponent<Crate>().GetHitByAxe();
+            }
 
-                if (crateScript)
-                {
-                    other.gameObject.GetComponent<Crate>().GetHitByAxe();
-                }
+            if (other.CompareTag("DoorOrb"))
+            {
+                other.gameObject.GetComponent<Orb>().GetHitByAxe();
             }
         }
         else
