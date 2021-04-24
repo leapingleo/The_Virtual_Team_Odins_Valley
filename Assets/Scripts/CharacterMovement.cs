@@ -16,15 +16,15 @@ public class CharacterMovement : MonoBehaviour
     private float glideForce;
     public float glideDistanceFactor;
     public float runTrigger;
-    private float glideSpeed;
+    public float glideSpeed;
     public float groundCheckDistance;
     private bool gliding;
     private bool canCheckGround;
     public float moveSpeed;
     public float attackSpeed;
 
-    public bool yiyiHanded;
-    public bool tristanHanded;
+   // public bool yiyiHanded;
+   // public bool tristanHanded;
     public Animator anim;
     public Transform groundCheckTransform;
    // public ActionController leftActionController;
@@ -34,6 +34,14 @@ public class CharacterMovement : MonoBehaviour
 
     public GameObject leftAxe;
     public GameObject rightAxe;
+    private Vector3 moveDir;
+    private float verticalVel;
+    private float gravity = 4f;
+    private bool grounded;
+    private float glideFactor;
+    private bool falling;
+    public float glideForceFactor;
+   
 
 
     // Start is called before the first frame update
@@ -60,61 +68,98 @@ public class CharacterMovement : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+    //void FixedUpdate()
+    //{
+    //    if (!jumping)
+    //    {
+    //        Move();
+    //    }
+
+
+    //    if (!jumping && ActionController.Instance.MainButtonReleased)
+    //    {
+    //        //Debug.Log("True");
+    //        Jump();
+    //    }
+
+    //    if (jumping)
+    //    {
+    //        /*
+    //         * HAVENT USED IT BECUASE GLIDE DIDNT WORK FOR ME, I THINK MESSED IT UP, SORRY YIYI ):
+    //         */
+    //        //if (acButtons.MainButtonPressed)
+    //        //{
+    //        //    Glide();
+    //        //}
+    //        //else
+    //        //{
+    //        //    Fall();
+    //        //}
+    //        Fall();
+
+    //        if (canCheckGround)
+    //        {
+    //            if (GroundCheck())
+    //            {
+    //                if (gliding)
+    //                {
+    //                    SetGliding(false);
+    //                }
+
+    //                jumping = false;
+    //                anim.SetTrigger("jump_end");
+    //                canCheckGround = false;
+    //            }
+    //        }
+    //    }
+
+    //    if (!jumping && ActionController.Instance.SecondaryButtonReleased)
+    //    {
+    //        anim.SetTrigger("attack");
+    //    }
+    //}  
+
     void FixedUpdate()
     {
-        if (!jumping)
+        if (grounded)
         {
-            Move();
-        }
-
-
-        if (!jumping && ActionController.Instance.MainButtonReleased)
+            verticalVel = -gravity * Time.fixedDeltaTime;
+            if (ActionController.Instance.MainButtonReleased)
+                verticalVel = jumpForce * 0.5f;
+            
+            moveDir = new Vector3( ActionController.Instance.JoystickDirection.x, verticalVel, ActionController.Instance.JoystickDirection.z);
+            Move(moveDir);
+        } else
         {
-            //Debug.Log("True");
-            Jump();
-        }
-
-        if (jumping)
-        {
-            /*
-             * HAVENT USED IT BECUASE GLIDE DIDNT WORK FOR ME, I THINK MESSED IT UP, SORRY YIYI ):
-             */
-            //if (acButtons.MainButtonPressed)
-            //{
-            //    Glide();
-            //}
-            //else
-            //{
-            //    Fall();
-            //}
-            Fall();
-
-            if (canCheckGround)
+            //slowly increasing jump velocity unitil reach max jump force
+            if (verticalVel < jumpForce && !falling)
+                verticalVel += 0.5f;
+            else
             {
-                if (GroundCheck())
-                {
-                    if (gliding)
-                    {
-                        SetGliding(false);
-                    }
+                falling = true;
 
-                    jumping = false;
-                    anim.SetTrigger("jump_end");
-                    canCheckGround = false;
-                }
+                //holding jump button changes verticalVel based on glideFactor
+                glideFactor = ActionController.Instance.MainButtonPressed ? glideForceFactor : 1f;
+                    
+                verticalVel -= gravity * Time.fixedDeltaTime;
+                verticalVel *= glideFactor;
+                
             }
         }
+        Vector3 jumpDir = new Vector3(ActionController.Instance.JoystickDirection.x * 0.5f, verticalVel, ActionController.Instance.JoystickDirection.z * 0.5f);
+        FacePosition(ActionController.Instance.JoystickDirection);
+        rigidBody.velocity = jumpDir;
 
-        if (!jumping && ActionController.Instance.SecondaryButtonReleased)
+
+
+        if (GroundCheck() && ActionController.Instance.SecondaryButtonPressed)
         {
             anim.SetTrigger("attack");
         }
 
-        
     }
 
-    public void Move()
+    public void Move(Vector3 dir)
     {
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("attack01") || anim.GetCurrentAnimatorStateInfo(0).IsName("attack02"))
         {
@@ -125,18 +170,29 @@ public class CharacterMovement : MonoBehaviour
             speed = moveSpeed;
         }
 
-
         if (ActionController.Instance.JoystickDirection != Vector3.zero)
         {
             anim.SetTrigger("walk");
             
-            rigidBody.MovePosition(transform.position + ActionController.Instance.JoystickDirection * speed * Time.fixedDeltaTime);
+            rigidBody.MovePosition(transform.position + moveDir * speed * Time.fixedDeltaTime);
             FacePosition(ActionController.Instance.JoystickDirection);
         }
         else
         {
             anim.SetTrigger("idle");
         }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        falling = false;
+        glideFactor = 0.1f;
+        grounded = true;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        grounded = false;
     }
 
     public void SetGliding(bool gliding)
@@ -163,7 +219,6 @@ public class CharacterMovement : MonoBehaviour
         {
             SetGliding(true);
         }
-
 
         if (glideForce > 0f)
             glideForce -= 0.6f;
