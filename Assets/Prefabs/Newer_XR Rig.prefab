@@ -201,6 +201,7 @@ GameObject:
   - component: {fileID: 790199884600513414}
   - component: {fileID: 790199884600513413}
   - component: {fileID: 790199884600513410}
+  - component: {fileID: 1925244590}
   m_Layer: 0
   m_Name: Newer_XR Rig
   m_TagString: Untagged
@@ -282,6 +283,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Timeout: 10
   m_XRRig: {fileID: 0}
+--- !u!114 &1925244590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 790199884600513529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bd5e5ddd242bd64581fb5ed9c0e0507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PolyMesh:
+    name: 
+    vertices: []
+    normals: []
+    colors: []
+    tangents: []
+    uv0: []
+    uv1: []
+    uv2: []
+    uv3: []
+    m_Triangles: 
+    m_SubMeshes: []
+    m_Mesh: {fileID: 0}
+  m_SkinMeshRef: {fileID: 0}
+  m_OriginalMeshObject: {fileID: 0}
+  m_Mode: 0
 --- !u!1 &790199884776010229
 GameObject:
   m_ObjectHideFlags: 0
@@ -738,16 +767,16 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 0f601e2b-9462-4eb5-85ba-e8c47070c62f
-      m_Path: <XRInputV1::Oculus::OculusTouchControllerRight>{RightHand}/primarybutton
+      m_Id: cdd09747-cd31-415c-a0f9-33d6ecdff2e4
+      m_Path: <OculusTouchController>{LeftHand}/primaryButton
       m_Interactions: 
       m_Processors: 
       m_Groups: 
       m_Action: Main Button
       m_Flags: 0
     - m_Name: 
-      m_Id: cdd09747-cd31-415c-a0f9-33d6ecdff2e4
-      m_Path: <OculusTouchController>{LeftHand}/primaryButton
+      m_Id: f5950f0d-607b-425a-b445-1d5b9274cd65
+      m_Path: <OculusTouchController>{RightHand}/primaryButton
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -762,46 +791,93 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 3ecca123-1f8a-4771-b417-7a8e9beb9a8f
-      m_Path: <OculusTouchController>{RightHand}/secondaryButton
+      m_Id: 3073ed91-d705-4217-8dc7-efdbe96ecb04
+      m_Path: <OculusTouchController>{LeftHand}/secondaryButton
       m_Interactions: 
       m_Processors: 
       m_Groups: 
       m_Action: Secondary Button
       m_Flags: 0
     - m_Name: 
-      m_Id: fe5c145a-a7c4-44f3-aa15-22dae204ed4f
-      m_Path: <OpenVROculusTouchController>{LeftHand}/secondaryButton
+      m_Id: 9c83da26-36e2-4148-bea6-0bd5f3df6064
+      m_Path: <OculusTouchController>{RightHand}/secondaryButton
       m_Interactions: 
       m_Processors: 
       m_Groups: 
       m_Action: Secondary Button
       m_Flags: 0
   joystick:
-    m_Name: 
+    m_Name: Joystick
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 
+    m_Id: 8f61596c-33cf-4efb-b7cb-662e801a8b3b
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings: []
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 08abb3f1-1a0f-4454-b1a9-bd375f94a4d0
+      m_Path: <OculusTouchController>{LeftHand}/thumbstick
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Joystick
+      m_Flags: 0
+    - m_Name: 
+      m_Id: e38f4ddc-e57a-45ac-8719-f17aaca3536b
+      m_Path: <OculusTouchController>{RightHand}/thumbstick
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Joystick
+      m_Flags: 0
   triggerButton:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
+    m_Name: Trigger Button
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 5dd972b5-4a5b-47d8-a8b0-8fbdca586c03
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings: []
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: eee7c334-a609-4ca5-a6f0-44fd5a809b16
+      m_Path: <OculusTouchController>{LeftHand}/triggerPressed
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Trigger Button
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 54db3489-835a-4044-b5c3-885b3c1225cc
+      m_Path: <OculusTouchController>{RightHand}/triggerPressed
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Trigger Button
+      m_Flags: 0
   controllerPos:
-    m_Name: 
+    m_Name: Controller Pos
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 
+    m_Id: 9d1fb156-1fbc-4056-a7e1-8be5103970ff
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings: []
-  handObject: {fileID: 790199885021194219}
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 0a949c48-ebec-48a4-90ce-7f55b3cdeb98
+      m_Path: <OculusTouchController>{LeftHand}/devicePosition
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Controller Pos
+      m_Flags: 0
+    - m_Name: 
+      m_Id: f4ffc82d-2f32-48a1-a103-0961bfe0dca6
+      m_Path: <OculusTouchController>{RightHand}/devicePosition
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Controller Pos
+      m_Flags: 0
   gripPressedValue: 0.25
 --- !u!114 &790199884776010236
 MonoBehaviour:
@@ -826,7 +902,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 790199884776010229}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48d8fd13c118f444d8cbdedc38990cf8, type: 3}
   m_Name: 
@@ -915,7 +991,6 @@ GameObject:
   - component: {fileID: 790199885174186155}
   - component: {fileID: 790199885174186154}
   - component: {fileID: 790199885174186157}
-  - component: {fileID: 790199885174186153}
   - component: {fileID: 790199885174186166}
   - component: {fileID: 790199885174186167}
   - component: {fileID: 37432060505732593}
@@ -1337,76 +1412,6 @@ MonoBehaviour:
   m_SnapThresholdDistance: 10
   m_Reticle: {fileID: 0}
   m_StopLineAtFirstRaycastHit: 1
---- !u!114 &790199885174186153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 790199885174186159}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25e93973c99132d4ca8ab849bc773121, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainButton:
-    m_Name: Main Button
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: c73c032d-edb1-4efd-8e93-c7efffaa250f
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 0f601e2b-9462-4eb5-85ba-e8c47070c62f
-      m_Path: <XRInputV1::Oculus::OculusTouchControllerRight>{RightHand}/primarybutton
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Main Button
-      m_Flags: 0
-  secondaryButton:
-    m_Name: Secondary Button
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 6f9bb658-92e0-42fb-9a8f-649ed64ffab5
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 3ecca123-1f8a-4771-b417-7a8e9beb9a8f
-      m_Path: <OculusTouchController>{RightHand}/secondaryButton
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Secondary Button
-      m_Flags: 0
-  joystick:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-  triggerButton:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-  controllerPos:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-  handObject: {fileID: 790199884465908354}
-  gripPressedValue: 0.25
 --- !u!114 &790199885174186166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1430,7 +1435,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 790199885174186159}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48d8fd13c118f444d8cbdedc38990cf8, type: 3}
   m_Name: 
@@ -1676,6 +1681,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4570966223599778759, guid: 86090c6536bc10848acf7454645703af, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8174262987760109394, guid: 86090c6536bc10848acf7454645703af, type: 3}
       propertyPath: m_Name
       value: orb
@@ -1748,6 +1757,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 214932169829768065, guid: 86090c6536bc10848acf7454645703af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4570966223599778759, guid: 86090c6536bc10848acf7454645703af, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8174262987760109394, guid: 86090c6536bc10848acf7454645703af, type: 3}

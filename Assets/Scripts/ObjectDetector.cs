@@ -38,7 +38,7 @@ public class ObjectDetector : MonoBehaviour
             DrawIndicatorRay(transform.position, hit.point, 0.01f);
 
 
-            if (detectedObject == null && ActionController.Instance.ActivationPressed)
+            if (detectedObject == null && ActionController.Instance.TriggerButtonPressed)
             {
                 detectedObject = hit.transform.gameObject;
             }
@@ -47,7 +47,7 @@ public class ObjectDetector : MonoBehaviour
             SetIndicatorPos(new Vector3(999, 999, 999));
         }
 
-        if (ActionController.Instance.ActivationPressed && detectedObject != null)
+        if (ActionController.Instance.TriggerButtonPressed && detectedObject != null)
         {
             if (detectedObject.CompareTag("Grabable"))
                 MoveObj(detectedObject);

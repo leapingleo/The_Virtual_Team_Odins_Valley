@@ -35,7 +35,18 @@ public class ObjectDetectorGrabThrow : MonoBehaviour
         if (ActionController.Instance.TriggerButtonPressed && detectedObject != null)
         {
             if (detectedObject.GetComponent<GrabThrow>().canBeGrabThrown)
+            {
                 GrabObject(detectedObject);
+                RaycastHit shootHit;
+                if (Physics.Raycast(transform.position, transform.forward, out shootHit, shootDistance))
+                {
+                    SetIndicatorPos(shootHit.point);
+                }
+                else
+                {
+                    SetIndicatorPos(new Vector3(999, 999, 999));
+                }
+            }
             else
                 detectedObject = null;
         }
@@ -45,12 +56,13 @@ public class ObjectDetectorGrabThrow : MonoBehaviour
             RaycastHit shootHit;
             if (Physics.Raycast(transform.position, transform.forward, out shootHit, shootDistance))
             {
+                SetIndicatorPos(shootHit.point);
                 detectedObject.GetComponent<GrabThrow>().MoveToReleasePosition(shootHit.point);
             }
             else
             {
                 detectedObject.GetComponent<GrabThrow>().MoveToReleasePosition(transform.position + transform.forward * shootDistance);
-
+                SetIndicatorPos(new Vector3(999, 999, 999));
             }
             detectedObject = null;
         }

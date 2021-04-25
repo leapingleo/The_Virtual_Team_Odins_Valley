@@ -13,7 +13,6 @@ public class ActionController : MonoBehaviour
     public InputAction joystick;
     public InputAction triggerButton;
     public InputAction controllerPos;
-    public GameObject handObject;
     //public CharacterMovement character;
     public float gripPressedValue;
     private bool activationPressed;
@@ -79,6 +78,8 @@ public class ActionController : MonoBehaviour
 
         secondaryButton.performed += SecondaryButtonPerformed;
         secondaryButton.canceled += SecondaryButtonCanceled;
+
+        controllerPos.performed += PositionPerformed;
     }
 
     //private void LateUpdate()
@@ -252,6 +253,7 @@ public class ActionController : MonoBehaviour
         secondaryButton.Enable();
         triggerButton.Enable();
         joystick.Enable();
+        controllerPos.Enable();
     }
 
     void OnDisable()
@@ -260,5 +262,6 @@ public class ActionController : MonoBehaviour
         secondaryButton.Disable();
         triggerButton.Disable();
         joystick.Disable();
+        controllerPos.Disable();
     }
 }
