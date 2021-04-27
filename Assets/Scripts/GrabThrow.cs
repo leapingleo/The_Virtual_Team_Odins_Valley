@@ -25,7 +25,15 @@ public class GrabThrow : MonoBehaviour
         initialTransform = transform;
     }
 
-
+    public void ResetAttributes()
+    {
+        grabbed = false;
+        canBeGrabThrown = true;
+        moveToHandInit = true;
+        moveAwayHandInit = true;
+        movedToHand = false;
+        collided = false;
+    }
 
 
     public void MoveToHand(Transform controller)
@@ -131,7 +139,7 @@ public class GrabThrow : MonoBehaviour
         if (grabbed)
         {
             collided = true;
-            Collision(collision);
+            gameObject.SetActive(false);
         }
         
     }

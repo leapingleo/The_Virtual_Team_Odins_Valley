@@ -7,11 +7,64 @@ using UnityEngine.ProBuilder.MeshOperations;
 public class InteractableCube : MonoBehaviour
 {
     public enum MovementType { X_AXIS, Y_AXIS, Z_AXIS };
-    public MovementType type;
+    public MovementType[] types;
+    public float movementPlus;
+    public float movementMinus;
     ProBuilderMesh mesh;
+
+    private MovementType type;
+    private float[] minRanges;
+    private float[] maxRanges;
+    private bool withPlayer;
 
     void Start()
     {
+        minRanges = new float[types.Length];
+        maxRanges = new float[types.Length];
+
+        if (types.Length == 1)
+        {
+            type = types[0];
+        }
+
+        withPlayer = false;
+
+        float position = 0f;
+
+        for (int i = 0; i < types.Length; i++)
+        {
+            if (types[i] == MovementType.X_AXIS)
+            {
+                position = transform.position.x;
+            }
+            else if (types[i] == MovementType.Z_AXIS)
+            {
+                position = transform.position.z;
+            }
+            else if (types[i] == MovementType.Y_AXIS)
+            {
+                position = transform.position.y;
+            }
+
+            minRanges[i] = position - movementMinus;
+            maxRanges[i] = position + movementPlus;
+
+        }
+
+
+        //if (type == MovementType.X_AXIS)
+        //{
+        //    position = transform.position.x;
+        //}
+        //else if (type == MovementType.Z_AXIS)
+        //{
+        //    position = transform.position.z;
+        //}
+        //else if (type == MovementType.Y_AXIS)
+        //{
+        //    position = transform.position.y;
+        //}
+
         mesh = GetComponent<ProBuilderMesh>();
     }
     private void Update()
@@ -67,34 +120,121 @@ public class InteractableCube : MonoBehaviour
 
     public void SetAtNewPos(Vector3 dir)
     {
-        Vector3 moveDir = dir;
-        Vector3 combine = Vector3.zero;
+        if (!withPlayer)
+        {
+            Vector3 moveDir = dir;
+            Vector3 combine = Vector3.zero;
 
-        if (type == MovementType.Z_AXIS)
-            combine = new Vector3(transform.forward.x * moveDir.z, transform.forward.y * moveDir.z, transform.forward.z * moveDir.z);
-        if (type == MovementType.X_AXIS)
-            combine = new Vector3(transform.right.x * moveDir.x, transform.right.y * moveDir.x, transform.right.z * moveDir.x);
-        if (type == MovementType.Y_AXIS)
-            combine = new Vector3(transform.up.x * moveDir.y, transform.up.y * moveDir.y, transform.up.z * moveDir.y);
+            for (int i = 0; i < types.Length; i++)
+            {
+                if (types[i] == MovementType.Z_AXIS && (transform.position.z + moveDir.z >= minRanges[i] && transform.position.z + moveDir.z <= maxRanges[i]))
+                {
+                    combine += new Vector3(transform.forward.x * moveDir.z, transform.forward.y * moveDir.z, transform.forward.z * moveDir.z);
+                }
+                if (types[i] == MovementType.X_AXIS && (transform.position.x + moveDir.x >= minRanges[i] && transform.position.x + moveDir.x <= maxRanges[i]))
+                    combine += new Vector3(transform.right.x * moveDir.x, transform.right.y * moveDir.x, transform.right.z * moveDir.x);
+                if (types[i] == MovementType.Y_AXIS && (transform.position.y + moveDir.y >= minRanges[i] && transform.position.y + moveDir.y <= maxRanges[i]))
+                    combine += new Vector3(transform.up.x * moveDir.y, transform.up.y * moveDir.y, transform.up.z * moveDir.y);
+                //if (types[i] == MovementType.Z_AXIS && (transform.position.z + moveDir.z >= minRanges[i] && transform.position.z + moveDir.z <= maxRanges[i]))
+                //{
+                //    combine += new Vector3(0f, 0f, transform.forward.z * moveDir.z);
+                //}
+                //if (type == MovementType.X_AXIS && (transform.position.x + moveDir.x >= minRanges[i] && transform.position.x + moveDir.x <= maxRanges[i]))
+                //    combine += new Vector3(transform.right.x * moveDir.x, 0f, 0f);
+                //if (type == MovementType.Y_AXIS && (transform.position.y + moveDir.y >= minRanges[i] && transform.position.y + moveDir.y <= maxRanges[i]))
+                //    combine += new Vector3(0f, transform.up.y * moveDir.y, 0f);
+            }
 
-        transform.position += combine * 2f;
+            transform.position += combine;
+            //Vector3 moveDir = dir;
+            //Vector3 combine = Vector3.zero;
+            //Debug.Log("z = " + transform.position.z + " min " + minRange + " max " + maxRange);
+            //if (type == MovementType.Z_AXIS && (transform.position.z + moveDir.z >= minRange && transform.position.z + moveDir.z <= maxRange))
+            //{
+            //    combine = new Vector3(transform.forward.x * moveDir.z, transform.forward.y * moveDir.z, transform.forward.z * moveDir.z);
+            //}
+            //if (type == MovementType.X_AXIS && (transform.position.x + moveDir.x >= minRange && transform.position.x + moveDir.x <= maxRange))
+            //    combine = new Vector3(transform.right.x * moveDir.x, transform.right.y * moveDir.x, transform.right.z * moveDir.x);
+            //if (type == MovementType.Y_AXIS && (transform.position.y + moveDir.y >= minRange && transform.position.y + moveDir.y <= maxRange))
+            //    combine = new Vector3(transform.up.x * moveDir.y, transform.up.y * moveDir.y, transform.up.z * moveDir.y);
+
+            //transform.position += combine * 2f;
+        }
     }
 
-    public void Rotate(Vector3 rotVec, float rotSpeed)
+    public void Rotate(Quaternion rotVec, float rotSpeed)
     {
-        float xRot = rotVec.x * Mathf.Deg2Rad * rotSpeed;
-        float yRot = rotVec.y * Mathf.Deg2Rad * rotSpeed;
-        float zRot = rotVec.z * Mathf.Deg2Rad * rotSpeed;
+        if (!withPlayer)
+        {
+            float xRot = rotVec.x * Mathf.Deg2Rad * rotSpeed;
+            float yRot = rotVec.y * Mathf.Deg2Rad * rotSpeed;
+            float zRot = rotVec.z * Mathf.Deg2Rad * rotSpeed;
 
-        if (type == MovementType.Z_AXIS)
-            transform.RotateAround(transform.forward, xRot);
-        if (type == MovementType.X_AXIS)
-            transform.RotateAround(transform.right, -xRot);
-        if (type == MovementType.Y_AXIS)
-            transform.RotateAround(transform.up, xRot);
+            //if (type == MovementType.Z_AXIS)
+            //    transform.RotateAround(transform.forward, zRot);
+            //if (type == MovementType.X_AXIS)
+            //    transform.RotateAround(transform.right, xRot);
+            //if (type == MovementType.Y_AXIS)
+            //    transform.RotateAround(transform.up, yRot);
+
+            if (type == MovementType.Y_AXIS)
+            {
+                transform.Rotate(new Vector3(0f, xRot, 0f));
+            }
+        }
 
         //  transform.RotateAround(Vector3.up, -xRot);
         //  transform.RotateAround(Vector3.right, yRot);
         // transform.RotateAround(transform.forward, zRot);
+    }
+
+    public void Rotate(Vector3 rotVec, float rotSpeed)
+    {
+        if (!withPlayer)
+        {
+            float xRot = rotVec.x * Mathf.Deg2Rad * rotSpeed;
+            float yRot = rotVec.y * Mathf.Deg2Rad * rotSpeed;
+            float zRot = rotVec.z * Mathf.Deg2Rad * rotSpeed;
+
+            //if (type == MovementType.Z_AXIS)
+            //    transform.RotateAround(transform.forward, zRot);
+            //if (type == MovementType.X_AXIS)
+            //    transform.RotateAround(transform.right, xRot);
+            //if (type == MovementType.Y_AXIS)
+            //    transform.RotateAround(transform.up, yRot);
+            if (type == MovementType.X_AXIS)
+            {
+                transform.Rotate(new Vector3(xRot, 0f, 0f));
+            }
+            if (type == MovementType.Z_AXIS)
+            {
+                transform.Rotate(new Vector3(0f, 0f, xRot));
+            }
+
+            if (type == MovementType.Y_AXIS)
+            {
+                transform.Rotate(new Vector3(0f, xRot, 0f));
+            }
+        }
+
+        //  transform.RotateAround(Vector3.up, -xRot);
+        //  transform.RotateAround(Vector3.right, yRot);
+        // transform.RotateAround(transform.forward, zRot);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && (gameObject.tag == "GrabableNotWithPlayer" || gameObject.tag == "RotatableNotWithPlayer"))
+        {
+            withPlayer = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && (gameObject.tag == "GrabableNotWithPlayer" || gameObject.tag == "RotatableNotWithPlayer"))
+        {
+            withPlayer = false;
+        }
     }
 }

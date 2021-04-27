@@ -17,6 +17,7 @@ public class Enemy : GrabThrow
     private Vector3 walkDirection;
     private float timer;
     private EnemyState state;
+    private float standardMovementSpeed;
 
     public enum EnemyState { IDLE, WALK, GRABBED, PLAYER_DETECTED, ATTACKING_PLAYER, DIZZY };
 
@@ -27,7 +28,7 @@ public class Enemy : GrabThrow
         rb.isKinematic = true;
         rb.useGravity = false;
         timer = idleTime;
-        
+        standardMovementSpeed = navmeshAgent.speed;
     }
 
     // Update is called once per frame
@@ -93,7 +94,6 @@ public class Enemy : GrabThrow
 
             if (playerPosition != Vector3.zero && Vector3.Distance(transform.position, playerPosition) < 0.05f)
             {
-                StartCoroutine(Pause(1f));
                 animator.SetTrigger("enter_attack");
             }
 
@@ -102,6 +102,15 @@ public class Enemy : GrabThrow
         if (state == EnemyState.DIZZY)
         {
 
+        }
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("enemy_attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("enemy_hit"))
+        {
+            navmeshAgent.speed = 0f;
+        }
+        else
+        {
+            navmeshAgent.speed = standardMovementSpeed;
         }
 
 
@@ -114,13 +123,12 @@ public class Enemy : GrabThrow
         state = EnemyState.GRABBED;
         animator.SetTrigger("enter_falling");
         rb.detectCollisions = true;
+        axe.SetActive(false);
         base.MoveToHandInit();
-
     }
 
     public void GetHitByAxe()
     {
-        StartCoroutine(Pause(0.95f));
         GetHit(1);
     }
 
@@ -167,33 +175,13 @@ public class Enemy : GrabThrow
     {
         if (collision.gameObject.layer == 9 && collision.gameObject.GetComponent<GrabThrow>().grabbed)
         {
-            GetHit(5);
+            GetHit(1);
         }
-    }
 
-    private IEnumerator Pause(float pauseTime)
-    {
-        navmeshAgent.isStopped = true;
-        timer = 100f;
-        yield return new WaitForSeconds(pauseTime);
-        
-
-        if (state != EnemyState.GRABBED && state != EnemyState.DIZZY)
+        if (grabbed)
         {
-            navmeshAgent.isStopped = false;
-            if (visionSphere.PlayerDetected())
-            {
-                state = EnemyState.PLAYER_DETECTED;
-                timer = updatePlayerPathTime;
-                navmeshAgent.destination = GetNavmeshPlayerPosition(visionSphere.PlayerPosition());
-            }
-            else
-            {
-                state = EnemyState.IDLE;
-                timer = idleTime;
-            }
+            gameObject.SetActive(false);
         }
-       
     }
 
     public void TurnOnAxeCollision()

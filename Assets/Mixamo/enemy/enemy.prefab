@@ -624,7 +624,7 @@ GameObject:
   - component: {fileID: 5286724721658612658}
   - component: {fileID: 962753715299769188}
   - component: {fileID: 1046809216536520790}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: detectionSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -919,7 +919,7 @@ Transform:
   m_GameObject: {fileID: 6223677382879950432}
   m_LocalRotation: {x: -0, y: 0.21246484, z: -0, w: 0.9771688}
   m_LocalPosition: {x: -0.72959995, y: 0.5994624, z: 1.4548}
-  m_LocalScale: {x: 0.017239999, y: 0.017239999, z: 0.017239999}
+  m_LocalScale: {x: 0.019870823, y: 0.019870823, z: 0.019870823}
   m_Children:
   - {fileID: 4108926406127289774}
   - {fileID: 587838167811938894}
@@ -942,18 +942,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 4430650859750871303}
   bc: {fileID: 503011630431360989}
-  moveToSpeed: 100
-  moveAwaySpeed: 300
+  moveToSpeed: 40
+  moveAwaySpeed: 80
   respawnTime: 0
-  angularVelocityMultiplier: 0
+  angularVelocityMultiplier: 80
   canBeGrabThrown: 1
   respawn: 0
   grabbed: 0
   collided: 0
-  numHits: 5
+  numHits: 3
   idleTime: 2
-  updatePlayerPathTime: 0.15
-  walkRadius: 0.25
+  updatePlayerPathTime: 0.75
+  walkRadius: 0.15
   visionSphere: {fileID: 1046809216536520790}
   navmeshAgent: {fileID: 2696548208556754304}
   animator: {fileID: 4050164489828078400}

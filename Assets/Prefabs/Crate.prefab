@@ -5959,7 +5959,7 @@ MonoBehaviour:
   grabbed: 0
   collided: 0
   collectible: {fileID: 8558824345279697991, guid: 2c27fc16e4984904daf7558198072836, type: 3}
-  numCollectibles: 10
+  numCollectibles: 4
 --- !u!54 &3992000153747101308
 Rigidbody:
   m_ObjectHideFlags: 0

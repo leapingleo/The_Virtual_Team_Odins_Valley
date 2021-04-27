@@ -892,7 +892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   faceMoveSpeed: 2
-  rotSpeed: 3
+  rotSpeed: 14500
   indicatorSphere: {fileID: 0}
   lineRenderer: {fileID: 790199884776010225}
 --- !u!114 &4539532266543832713
@@ -1425,7 +1425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   faceMoveSpeed: 2
-  rotSpeed: 3
+  rotSpeed: 14500
   indicatorSphere: {fileID: 0}
   lineRenderer: {fileID: 790199884465908352}
 --- !u!114 &790199885174186167

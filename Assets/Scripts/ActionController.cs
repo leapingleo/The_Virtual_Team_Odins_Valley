@@ -17,12 +17,20 @@ public class ActionController : MonoBehaviour
     public float gripPressedValue;
     private bool activationPressed;
     public bool ActivationPressed { get { return activationPressed; } }
+
+    private bool mainButtonDown;
+    public bool MainButtonDown {  get { return mainButtonDown; } }
+
     private bool mainButtonPressed;
     public bool MainButtonPressed { get { return mainButtonPressed; } }
 
     private bool mainButtonReleased;
     public bool MainButtonReleased { get { return mainButtonReleased; } }
 
+    private bool secondaryButtonDown;
+    public bool SecondaryButtonDown { get { return secondaryButtonDown; } }
+
+    private bool ignoreMainButtonRelease;
     private bool secondaryButtonPressed;
     public bool SecondaryButtonPressed { get { return secondaryButtonPressed; } }
     private bool selectPressed;
@@ -80,6 +88,12 @@ public class ActionController : MonoBehaviour
         secondaryButton.canceled += SecondaryButtonCanceled;
 
         controllerPos.performed += PositionPerformed;
+    }
+
+    private void FixedUpdate()
+    {
+        mainButtonDown = false;
+        mainButtonReleased = false;
     }
 
     //private void LateUpdate()
@@ -140,13 +154,17 @@ public class ActionController : MonoBehaviour
     private void MainButtonCanceled(InputAction.CallbackContext obj)
     {
         mainButtonPressed = false;
-        mainButtonReleased = true;
-        StartCoroutine(TurnOffMainButtonRelease(0.1f));
 
+        if (!ignoreMainButtonRelease)
+            mainButtonReleased = true;
+        else
+            ignoreMainButtonRelease = false;
     }
 
     private void MainButtonPerformed(InputAction.CallbackContext obj)
     {
+        if (!mainButtonPressed)
+            mainButtonDown = true;
         mainButtonPressed = true;
     }
 
@@ -228,6 +246,11 @@ public class ActionController : MonoBehaviour
     //    vec2.y = vec3.z;
     //    character.GetComponent<CharacterMovementWithAnimations>().MoveCharacter(vec2);
     //}
+
+    public void IgnoreMainButtonNextRelease()
+    {
+        ignoreMainButtonRelease = true;
+    }
 
     IEnumerator TurnOffMainButtonRelease(float waitTime)
     {

@@ -9,6 +9,7 @@ public class ObjectDetector : MonoBehaviour
     public GameObject indicatorSphere;
     ActionController actionController;
     private Vector3 lastHandPos;
+    private Quaternion lastHandRotation;
     private GameObject detectedObject;
     private Vector3 hitNormal;
     Vector3 cameraPoint = Vector3.zero;
@@ -49,9 +50,9 @@ public class ObjectDetector : MonoBehaviour
 
         if (ActionController.Instance.TriggerButtonPressed && detectedObject != null)
         {
-            if (detectedObject.CompareTag("Grabable"))
+            if (detectedObject.CompareTag("Grabable") || detectedObject.CompareTag("GrabableNotWithPlayer"))
                 MoveObj(detectedObject);
-            if (detectedObject.CompareTag("Rotatable"))
+            if (detectedObject.CompareTag("Rotatable") || detectedObject.CompareTag("RotatableNotWithPlayer"))
                 RotateObject(detectedObject);
 
             if (detectedObject.CompareTag("Reset"))
@@ -61,12 +62,16 @@ public class ObjectDetector : MonoBehaviour
             detectedObject = null;
         }
         lastHandPos = ActionController.Instance.HandPos;
+        lastHandRotation = transform.rotation;
     }
 
     void RotateObject(GameObject obj)
     {
+        Quaternion moveDir = new Quaternion(transform.rotation.x - lastHandRotation.x, transform.rotation.y - lastHandRotation.y,
+            transform.rotation.z - lastHandRotation.z, 0f);
+        
         Vector3 diff = ActionController.Instance.HandPos - lastHandPos;
-        Vector3 moveDir = diff * 100f;
+        //Vector3 moveDir = diff * 100f;
         
         obj.GetComponent<InteractableCube>().Rotate(moveDir, rotSpeed);
     }

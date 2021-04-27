@@ -19,7 +19,12 @@ public class StayOnPlatform : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.transform.CompareTag("Grabable") || collision.transform.CompareTag("Rotatable"))
+        if (collision.transform.CompareTag("Grabable") || collision.transform.CompareTag("Rotatable") || collision.transform.CompareTag("Shuriken"))
+        {
+            transform.parent = collision.transform;
+        }
+
+        if (collision.transform.CompareTag("Shuriken") && !collision.gameObject.GetComponent<Shuriken>().rotate)
         {
             transform.parent = collision.transform;
         }

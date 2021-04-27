@@ -46,10 +46,6 @@ public class AxeCollision : MonoBehaviour
                 other.gameObject.GetComponent<Orb>().GetHitByAxe();
             }
         }
-        else
-        {
-
-        }
     }
 
 }
