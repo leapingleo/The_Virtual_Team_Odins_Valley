@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RestPlayer : MonoBehaviour
 {
@@ -20,6 +21,6 @@ public class RestPlayer : MonoBehaviour
 
     public void Reset()
     {
-        player.transform.position = resetPoint.position;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

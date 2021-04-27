@@ -52,6 +52,10 @@ public class CharacterMovement : MonoBehaviour
     public Transform crowStandardTransform;
     public GameObject crow;
 
+    private Vector3 prevPos;
+    public float checkPointRate;
+    private float checkPointTimer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -81,8 +85,44 @@ public class CharacterMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (Time.time > checkPointTimer)
+        {
+            checkPointTimer += checkPointRate;
 
+            if (playerGrounded.grounded && transform.position.y > 0.6f)
+                prevPos = transform.position;
+        }
 
+        if (transform.position.y < 0.3f)
+            transform.position = prevPos;
+
+        if (playerGrounded.grounded)
+        {
+            if (ActionController.Instance.MainButtonReleased)
+            {
+                grounded = false;
+                jumping = true;
+                anim.SetTrigger("jump_start");
+                buttonPressedSecondTime = false;
+                rigidBody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+            }
+          
+        }
+        else
+        {
+            jumping = false;
+            falling = true;
+            if (ActionController.Instance.MainButtonPressed)
+            {
+                glideFactor = (ActionController.Instance.MainButtonPressed) ? glideForceFactor : 1f;
+                rigidBody.velocity = new Vector3(rigidBody.velocity.x, rigidBody.velocity.y * glideFactor, rigidBody.velocity.z);
+            }
+        }
+        moveDir = new Vector3(ActionController.Instance.JoystickDirection.x, 0, ActionController.Instance.JoystickDirection.z);
+        Move(moveDir);
+        // Move(ActionController.Instance.JoystickDirection);
+
+        /*
         if (playerGrounded.grounded)
         {
             verticalVel = -gravity * Time.fixedDeltaTime;
@@ -112,8 +152,6 @@ public class CharacterMovement : MonoBehaviour
                 jumping = false;
                 falling = true;
 
-
-
                 //holding jump button changes verticalVel based on glideFactor
                 glideFactor = (ActionController.Instance.MainButtonPressed) ? glideForceFactor : 1f; 
 
@@ -139,6 +177,7 @@ public class CharacterMovement : MonoBehaviour
 
         Vector3 jumpDir = new Vector3(ActionController.Instance.JoystickDirection.x * yiyiGravityModifier, verticalVel, ActionController.Instance.JoystickDirection.z * yiyiGravityModifier);
         rigidBody.velocity = jumpDir;
+        */
 
         if (ActionController.Instance.JoystickDirection != Vector3.zero)
         {

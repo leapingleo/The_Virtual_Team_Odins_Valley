@@ -50,6 +50,8 @@ public class ActionController : MonoBehaviour
     private Vector3 joystickDirection;
     public Vector3 JoystickDirection { get { return joystickDirection; } }
 
+    private bool triggerOccupied = false;
+    public bool TriggerOccupied { set { triggerOccupied = value; } get { return triggerOccupied; } }
 
     void Awake()
     {
@@ -116,12 +118,14 @@ public class ActionController : MonoBehaviour
     private void TriggerActionPerformed(InputAction.CallbackContext obj)
     {
         triggerButtonPressed = true;
+      
     }
 
     
 
     private void TriggerActionCanceled(InputAction.CallbackContext obj)
     {
+        triggerOccupied = false;
         triggerButtonPressed = false;
         triggerButtonReleased = true;
         StartCoroutine(TurnOffTriggerButtonRelease(0.1f));

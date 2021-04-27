@@ -922,6 +922,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootDistance: 10
   indicatorSphere: {fileID: 0}
+  lineRenderer: {fileID: 0}
 --- !u!1 &790199885021194219
 GameObject:
   m_ObjectHideFlags: 0
@@ -1455,6 +1456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootDistance: 10
   indicatorSphere: {fileID: 0}
+  lineRenderer: {fileID: 0}
 --- !u!1 &790199885546642318
 GameObject:
   m_ObjectHideFlags: 0

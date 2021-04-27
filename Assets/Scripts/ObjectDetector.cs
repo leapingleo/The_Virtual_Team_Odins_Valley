@@ -39,8 +39,9 @@ public class ObjectDetector : MonoBehaviour
             DrawIndicatorRay(transform.position, hit.point, 0.01f);
 
 
-            if (detectedObject == null && ActionController.Instance.TriggerButtonPressed)
+            if (detectedObject == null && ActionController.Instance.TriggerButtonPressed && !ActionController.Instance.TriggerOccupied)
             {
+                ActionController.Instance.TriggerOccupied = true;
                 detectedObject = hit.transform.gameObject;
             }
         } else {
@@ -60,6 +61,7 @@ public class ObjectDetector : MonoBehaviour
         } 
         else {
             detectedObject = null;
+        //    ActionController.Instance.TriggerOccupied = false;
         }
         lastHandPos = ActionController.Instance.HandPos;
         lastHandRotation = transform.rotation;
