@@ -8,6 +8,7 @@ public class Crate : GrabThrow
     public int numCollectibles;
 
     private GameObject[] collectibles;
+    private Transform parent;
 
     private void Awake()
     {
@@ -20,6 +21,7 @@ public class Crate : GrabThrow
             collectibles[i].gameObject.SetActive(false);
 
         }
+        parent = transform.parent;
     }
 
 
@@ -32,12 +34,15 @@ public class Crate : GrabThrow
             GetComponent<BoxCollider>().enabled = false;
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
+            parent.GetComponent<AudioSource>().Play();
             StartCoroutine(DestroyObjects(0.125f, 0.75f));
             StartCoroutine(ReleaseCollectibles(0.085f));
+            
         }
 
         if (!grabbed && collision.gameObject.layer == 9 && collision.gameObject.GetComponent<GrabThrow>().grabbed)
         {
+            parent.GetComponent<AudioSource>().Play();
             GetComponent<BoxCollider>().enabled = false;
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
@@ -48,6 +53,7 @@ public class Crate : GrabThrow
 
     public void GetHitByAxe()
     {
+        parent.GetComponent<AudioSource>().Play();
         GetComponent<BoxCollider>().enabled = false;
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(1).gameObject.SetActive(true);

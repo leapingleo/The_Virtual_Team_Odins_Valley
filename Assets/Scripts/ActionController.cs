@@ -92,7 +92,7 @@ public class ActionController : MonoBehaviour
         controllerPos.performed += PositionPerformed;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         mainButtonDown = false;
         mainButtonReleased = false;
@@ -110,10 +110,10 @@ public class ActionController : MonoBehaviour
     //    secondaryButtonReleased = false;
     //}
 
-    private void Update()
-    {
-        triggerButtonReleased = false;
-    }
+   // private void Update()
+   // {
+   //     triggerButtonReleased = false;
+    //}
 
     private void TriggerActionPerformed(InputAction.CallbackContext obj)
     {

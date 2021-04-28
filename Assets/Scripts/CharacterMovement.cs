@@ -39,7 +39,7 @@ public class CharacterMovement : MonoBehaviour
     public GameObject rightAxe;
     private Vector3 moveDir;
     private float verticalVel;
-    private float gravity = 4f;
+    private float gravity = 9.8f;
     private bool grounded;
     private float glideFactor;
     private bool falling;
@@ -55,6 +55,9 @@ public class CharacterMovement : MonoBehaviour
     private Vector3 prevPos;
     public float checkPointRate;
     private float checkPointTimer;
+
+    private float prevYvel;
+    private bool canJump;
 
     // Start is called before the first frame update
     void Start()
@@ -89,37 +92,59 @@ public class CharacterMovement : MonoBehaviour
         {
             checkPointTimer += checkPointRate;
 
-            if (playerGrounded.grounded && transform.position.y > 0.6f)
+            if (grounded && transform.position.y > 0.6f)
                 prevPos = transform.position;
         }
 
         if (transform.position.y < 0.3f)
             transform.position = prevPos;
 
-        if (playerGrounded.grounded)
+        if (grounded)
         {
-            if (ActionController.Instance.MainButtonReleased)
+            verticalVel = -gravity * Time.fixedDeltaTime;
+            if (ActionController.Instance.MainButtonPressed && canJump)
             {
-                grounded = false;
-                jumping = true;
+                canJump = false;
                 anim.SetTrigger("jump_start");
-                buttonPressedSecondTime = false;
-                rigidBody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+                //  rigidBody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+                verticalVel = jumpForce ;
             }
           
-        }
-        else
-        {
-            jumping = false;
+        }else { 
+          //  if (verticalVel < jumpForce && !falling)
+           // {
+           //     if (jumping)
+           //     verticalVel += yiyiGravityModifier;
+           // }
+          ///  else
+          //  {
             falling = true;
-            if (ActionController.Instance.MainButtonPressed)
+            //  if (ActionController.Instance.MainButtonPressed)
+            // {
+            if (glideFactor != 1f)
             {
-                glideFactor = (ActionController.Instance.MainButtonPressed) ? glideForceFactor : 1f;
-                rigidBody.velocity = new Vector3(rigidBody.velocity.x, rigidBody.velocity.y * glideFactor, rigidBody.velocity.z);
+                crow.transform.position = crowGlideTransform.position;
             }
+            else
+            {
+                crow.transform.position = crowStandardTransform.position;
+
+            }
+
+            glideFactor = (ActionController.Instance.MainButtonPressed) ? glideForceFactor : 1f;
+                  //  rigidBody.velocity = new Vector3(rigidBody.velocity.x, verticalVel * glideFactor, rigidBody.velocity.z);
+                //  }
+            verticalVel -= gravity * Time.fixedDeltaTime;
+
+            if (prevYvel > verticalVel)
+                verticalVel *= glideFactor;
+                
+           // }
         }
+        prevYvel = verticalVel;
+        rigidBody.velocity = new Vector3(0, verticalVel, 0);
         moveDir = new Vector3(ActionController.Instance.JoystickDirection.x, 0, ActionController.Instance.JoystickDirection.z);
-        Move(moveDir);
+        Move(moveDir.normalized);
         // Move(ActionController.Instance.JoystickDirection);
 
         /*
@@ -184,31 +209,72 @@ public class CharacterMovement : MonoBehaviour
             FacePosition(ActionController.Instance.JoystickDirection);
         }
 
-
-
-        if (playerGrounded.grounded && ActionController.Instance.SecondaryButtonPressed)
+        if (grounded && ActionController.Instance.SecondaryButtonPressed)
         {
             anim.SetTrigger("attack");
         }
 
-        if ((jumping || falling) && playerGrounded.grounded)
+        if ((jumping || falling) && grounded)
         {
             buttonPressedSecondTime = false;
             crow.transform.position = crowStandardTransform.position;
+            Debug.Log("landed");
             anim.SetTrigger("jump_end");
             falling = false;
             
             glideFactor = 0.1f;
-            grounded = true;
+           // grounded = true;
 
             //if character gliding then reaches the ground, as soon as he realeases he will jump again which feels weird.
-            if (ActionController.Instance.MainButtonPressed)
-            {
-                ActionController.Instance.IgnoreMainButtonNextRelease();
-            }
+           // if (ActionController.Instance.MainButtonPressed)
+           // {
+           //     ActionController.Instance.IgnoreMainButtonNextRelease();
+          //  }
         }
 
     }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.layer != 9 || collision.gameObject.layer != 10)
+        {
+            grounded = true;
+        }
+
+        // release the button after gliding makes next jump available
+        if (grounded && !ActionController.Instance.MainButtonPressed)
+        {
+            canJump = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.layer != 9 || collision.gameObject.layer != 10)
+        {
+            grounded = false;
+        }
+    }
+
+    /*
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.layer != 9 || other.gameObject.layer != 10)
+            grounded = true;
+
+        if (!ActionController.Instance.MainButtonPressed)
+            jumping = false;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer != 9 || other.gameObject.layer != 10)
+        {
+            grounded = false;
+            jumping = true;
+        }
+    }
+    */
 
     public void Move(Vector3 dir)
     {
