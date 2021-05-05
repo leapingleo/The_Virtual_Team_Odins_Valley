@@ -58,6 +58,7 @@ public class CharacterMovement : MonoBehaviour
 
     private float prevYvel;
     private bool canJump;
+    private bool jumpPerformed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -86,6 +87,12 @@ public class CharacterMovement : MonoBehaviour
 
     }
 
+    IEnumerator ChangeGravity()
+    {
+        yield return new WaitForSeconds(1f);
+        gravity *= 2f;
+    }
+
     void FixedUpdate()
     {
         if (Time.time > checkPointTimer)
@@ -104,23 +111,19 @@ public class CharacterMovement : MonoBehaviour
             verticalVel = -gravity * Time.fixedDeltaTime;
             if (ActionController.Instance.MainButtonPressed && canJump)
             {
+                jumpPerformed = true;
                 canJump = false;
                 anim.SetTrigger("jump_start");
-                //  rigidBody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+                //rigidBody.AddForce(new Vector3(0, jumpForce, 0));
                 verticalVel = jumpForce ;
             }
           
-        }else { 
-          //  if (verticalVel < jumpForce && !falling)
-           // {
-           //     if (jumping)
-           //     verticalVel += yiyiGravityModifier;
-           // }
-          ///  else
-          //  {
-            falling = true;
-            //  if (ActionController.Instance.MainButtonPressed)
-            // {
+        }else {
+            if (verticalVel < jumpForce && !falling && jumpPerformed)
+                verticalVel += 0.5f;
+            else
+                falling = true;
+
             if (glideFactor != 1f)
             {
                 crow.transform.position = crowGlideTransform.position;
@@ -130,21 +133,54 @@ public class CharacterMovement : MonoBehaviour
                 crow.transform.position = crowStandardTransform.position;
 
             }
-
-            glideFactor = (ActionController.Instance.MainButtonPressed) ? glideForceFactor : 1f;
-                  //  rigidBody.velocity = new Vector3(rigidBody.velocity.x, verticalVel * glideFactor, rigidBody.velocity.z);
+            if (falling)
+            {
+                glideFactor = (ActionController.Instance.MainButtonPressed) ? glideForceFactor : 1f;
+                //  rigidBody.velocity = new Vector3(rigidBody.velocity.x, verticalVel * glideFactor, rigidBody.velocity.z);
                 //  }
-            verticalVel -= gravity * Time.fixedDeltaTime;
+                verticalVel -= gravity * Time.fixedDeltaTime;
 
-            if (prevYvel > verticalVel)
+                if (prevYvel > verticalVel)
                 verticalVel *= glideFactor;
-                
-           // }
+            }
+
         }
         prevYvel = verticalVel;
         rigidBody.velocity = new Vector3(0, verticalVel, 0);
         moveDir = new Vector3(ActionController.Instance.JoystickDirection.x, 0, ActionController.Instance.JoystickDirection.z);
         Move(moveDir.normalized);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // Move(ActionController.Instance.JoystickDirection);
 
         /*
@@ -216,6 +252,7 @@ public class CharacterMovement : MonoBehaviour
 
         if ((jumping || falling) && grounded)
         {
+            jumpPerformed = false;
             buttonPressedSecondTime = false;
             crow.transform.position = crowStandardTransform.position;
             Debug.Log("landed");

@@ -11,15 +11,17 @@ public class ActionController : MonoBehaviour
     public InputAction mainButton;
     public InputAction secondaryButton;
     public InputAction joystick;
-    public InputAction triggerButton;
-    public InputAction controllerPos;
+    public InputAction leftTriggerButton;
+    public InputAction rightTriggerButton;
+    public InputAction leftControllerPos;
+    public InputAction rightControllerPos;
     //public CharacterMovement character;
     public float gripPressedValue;
     private bool activationPressed;
     public bool ActivationPressed { get { return activationPressed; } }
 
     private bool mainButtonDown;
-    public bool MainButtonDown {  get { return mainButtonDown; } }
+    public bool MainButtonDown { get { return mainButtonDown; } }
 
     private bool mainButtonPressed;
     public bool MainButtonPressed { get { return mainButtonPressed; } }
@@ -42,16 +44,25 @@ public class ActionController : MonoBehaviour
     public bool TriggerButtonReleased { get { return triggerButtonReleased; } }
 
     private bool secondaryButtonReleased;
-    public bool SecondaryButtonReleased { get { return secondaryButtonReleased;  } }
+    public bool SecondaryButtonReleased { get { return secondaryButtonReleased; } }
     public bool SelectPressed { get { return selectPressed; } }
-    private Vector3 handPos;
-    public Vector3 HandPos { get { return handPos; } }
+    private Vector3 leftHandPos;
+    public Vector3 HandPos { get { return leftHandPos; } }
+
+    public Vector3 LeftHandPos { get { return leftHandPos; } }
+    private Vector3 rightHandPos;
+    public Vector3 RightHandPos { get { return rightHandPos; } }
 
     private Vector3 joystickDirection;
     public Vector3 JoystickDirection { get { return joystickDirection; } }
 
     private bool triggerOccupied = false;
     public bool TriggerOccupied { set { triggerOccupied = value; } get { return triggerOccupied; } }
+
+    private bool leftTriggerPressed;
+    public bool LeftTriggerPressed { get { return leftTriggerPressed; } }
+    private bool rightTriggerPressed;
+    public bool RightTriggerPressed { get { return rightTriggerPressed; } }
 
     void Awake()
     {
@@ -60,7 +71,7 @@ public class ActionController : MonoBehaviour
         else
             Destroy(gameObject);
 
-      //  handObject.transform.GetChild(1).gameObject.SetActive(true);
+        //  handObject.transform.GetChild(1).gameObject.SetActive(true);
     }
 
     // Start is called before the first frame update
@@ -75,21 +86,56 @@ public class ActionController : MonoBehaviour
 
         //controller.uiPressAction.action.performed += TriggerActionPerformed;
         //controller.uiPressAction.action.canceled += TriggerActionCanceled;
-        controllerPos.performed += PositionPerformed;
+        leftControllerPos.performed += LeftPositionPerformed;
 
         joystick.performed += TranslateActionPerformed;
         joystick.canceled += TranslateActionCanceled;
 
         mainButton.performed += MainButtonPerformed;
         mainButton.canceled += MainButtonCanceled;
-        
-        triggerButton.performed += TriggerActionPerformed;
-        triggerButton.canceled += TriggerActionCanceled;
+
+        leftTriggerButton.performed += LeftTriggerActionPerformed;
+        leftTriggerButton.canceled += LeftTriggerActionCanceled;
+
+        rightTriggerButton.performed += RightTriggerActionPerformed;
+        rightTriggerButton.canceled += RightTriggerActionCanceled;
 
         secondaryButton.performed += SecondaryButtonPerformed;
         secondaryButton.canceled += SecondaryButtonCanceled;
 
-        controllerPos.performed += PositionPerformed;
+
+        rightControllerPos.performed += RightPositionPerformed;
+    }
+
+    private void LeftPositionPerformed(InputAction.CallbackContext obj)
+    {
+        leftHandPos = leftControllerPos.ReadValue<Vector3>();
+    }
+
+    private void RightPositionPerformed(InputAction.CallbackContext obj)
+    {
+        rightHandPos = rightControllerPos.ReadValue<Vector3>();
+    }
+
+    private void LeftTriggerActionCanceled(InputAction.CallbackContext obj)
+    {
+        leftTriggerPressed = false;
+    }
+
+    private void LeftTriggerActionPerformed(InputAction.CallbackContext obj)
+    {
+        leftTriggerPressed = true;
+    }
+
+
+    private void RightTriggerActionCanceled(InputAction.CallbackContext obj)
+    {
+        rightTriggerPressed = false;
+    }
+
+    private void RightTriggerActionPerformed(InputAction.CallbackContext obj)
+    {
+        rightTriggerPressed = true;
     }
 
     private void Update()
@@ -110,18 +156,16 @@ public class ActionController : MonoBehaviour
     //    secondaryButtonReleased = false;
     //}
 
-   // private void Update()
-   // {
-   //     triggerButtonReleased = false;
+    // private void Update()
+    // {
+    //     triggerButtonReleased = false;
     //}
 
     private void TriggerActionPerformed(InputAction.CallbackContext obj)
     {
         triggerButtonPressed = true;
-      
-    }
 
-    
+    }
 
     private void TriggerActionCanceled(InputAction.CallbackContext obj)
     {
@@ -133,8 +177,8 @@ public class ActionController : MonoBehaviour
 
     private void ActivateActionPerformed(InputAction.CallbackContext obj)
     {
-        
-       
+
+
     }
 
     private void ActivateActionCanceled(InputAction.CallbackContext obj)
@@ -172,10 +216,7 @@ public class ActionController : MonoBehaviour
         mainButtonPressed = true;
     }
 
-    private void PositionPerformed(InputAction.CallbackContext obj)
-    {
-        handPos = controllerPos.ReadValue<Vector3>();
-    }
+    
 
     private void SelectionActionCanceled(InputAction.CallbackContext obj)
     {
@@ -186,14 +227,14 @@ public class ActionController : MonoBehaviour
     private void SelectionActionPerformed(InputAction.CallbackContext obj)
     {
         selectPressed = true;
-      //  gripPressedValue = controller.selectAction.action.ReadValue<float>();
+        //  gripPressedValue = controller.selectAction.action.ReadValue<float>();
 
     }
 
     /*
     * All controller actions placed here
     */
-    
+
 
     private void TranslateActionPerformed(InputAction.CallbackContext obj)
     {
@@ -215,7 +256,7 @@ public class ActionController : MonoBehaviour
     private void UIActionPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         ResetAttributes();
-       // SwitchStates();
+        // SwitchStates();
     }
 
     /*
@@ -278,17 +319,23 @@ public class ActionController : MonoBehaviour
     {
         mainButton.Enable();
         secondaryButton.Enable();
-        triggerButton.Enable();
+        leftTriggerButton.Enable();
         joystick.Enable();
-        controllerPos.Enable();
+        leftControllerPos.Enable();
+
+        rightTriggerButton.Enable();
+        rightControllerPos.Enable();
     }
 
     void OnDisable()
     {
         mainButton.Disable();
         secondaryButton.Disable();
-        triggerButton.Disable();
+        leftTriggerButton.Disable();
         joystick.Disable();
-        controllerPos.Disable();
+        leftControllerPos.Disable();
+
+        rightTriggerButton.Disable();
+        rightControllerPos.Disable();
     }
 }

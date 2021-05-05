@@ -161,7 +161,7 @@ public class InteractableCube : MonoBehaviour
             //transform.position += combine * 2f;
         }
     }
-
+    /*
     public void Rotate(Quaternion rotVec, float rotSpeed)
     {
         if (!withPlayer)
@@ -216,6 +216,25 @@ public class InteractableCube : MonoBehaviour
                 transform.Rotate(new Vector3(0f, xRot, 0f));
             }
         }
+
+        //  transform.RotateAround(Vector3.up, -xRot);
+        //  transform.RotateAround(Vector3.right, yRot);
+        // transform.RotateAround(transform.forward, zRot);
+    }
+    */
+
+    public void Rotate(Vector3 rotVec, float rotSpeed)
+    {
+        float xRot = rotVec.x * Mathf.Deg2Rad * rotSpeed;
+        float yRot = rotVec.y * Mathf.Deg2Rad * rotSpeed;
+        float zRot = rotVec.z * Mathf.Deg2Rad * rotSpeed;
+
+        if (type == MovementType.Z_AXIS)
+            transform.RotateAround(transform.forward, yRot);
+        if (type == MovementType.X_AXIS)
+            transform.RotateAround(transform.right, -yRot);
+        if (type == MovementType.Y_AXIS)
+            transform.RotateAround(transform.up, yRot);
 
         //  transform.RotateAround(Vector3.up, -xRot);
         //  transform.RotateAround(Vector3.right, yRot);

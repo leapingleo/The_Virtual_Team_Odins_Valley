@@ -830,54 +830,38 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Joystick
       m_Flags: 0
-  triggerButton:
-    m_Name: Trigger Button
-    m_Type: 1
-    m_ExpectedControlType: Button
-    m_Id: 5dd972b5-4a5b-47d8-a8b0-8fbdca586c03
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: eee7c334-a609-4ca5-a6f0-44fd5a809b16
-      m_Path: <OculusTouchController>{LeftHand}/triggerPressed
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Trigger Button
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 54db3489-835a-4044-b5c3-885b3c1225cc
-      m_Path: <OculusTouchController>{RightHand}/triggerPressed
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Trigger Button
-      m_Flags: 0
-  controllerPos:
-    m_Name: Controller Pos
+  leftTriggerButton:
+    m_Name: 
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 9d1fb156-1fbc-4056-a7e1-8be5103970ff
+    m_Id: 
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 0a949c48-ebec-48a4-90ce-7f55b3cdeb98
-      m_Path: <OculusTouchController>{LeftHand}/devicePosition
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Controller Pos
-      m_Flags: 0
-    - m_Name: 
-      m_Id: f4ffc82d-2f32-48a1-a103-0961bfe0dca6
-      m_Path: <OculusTouchController>{RightHand}/devicePosition
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Controller Pos
-      m_Flags: 0
+    m_SingletonActionBindings: []
+  rightTriggerButton:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+  leftControllerPos:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+  rightControllerPos:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
   gripPressedValue: 0.25
 --- !u!114 &790199884776010236
 MonoBehaviour:
@@ -895,6 +879,7 @@ MonoBehaviour:
   rotSpeed: 14500
   indicatorSphere: {fileID: 0}
   lineRenderer: {fileID: 790199884776010225}
+  hand: 0
 --- !u!114 &4539532266543832713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1429,6 +1414,7 @@ MonoBehaviour:
   rotSpeed: 14500
   indicatorSphere: {fileID: 0}
   lineRenderer: {fileID: 790199884465908352}
+  hand: 0
 --- !u!114 &790199885174186167
 MonoBehaviour:
   m_ObjectHideFlags: 0
