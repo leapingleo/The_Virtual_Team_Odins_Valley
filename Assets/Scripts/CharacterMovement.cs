@@ -94,8 +94,7 @@ public class CharacterMovement : MonoBehaviour
                 anim.SetTrigger("jump_start");
                 buttonPressedSecondTime = false;
             }
-                
-            
+
             moveDir = new Vector3( ActionController.Instance.JoystickDirection.x, verticalVel, ActionController.Instance.JoystickDirection.z);
             Move(moveDir);
         } 
@@ -181,11 +180,12 @@ public class CharacterMovement : MonoBehaviour
         {
             speed = moveSpeed;
         }
+        Vector3 input = new Vector3(dir.x, 0f, dir.z);
 
         if (ActionController.Instance.JoystickDirection != Vector3.zero)
         {
             anim.SetTrigger("walk");
-            
+
             rigidBody.MovePosition(transform.position + moveDir * speed * Time.fixedDeltaTime);
             FacePosition(ActionController.Instance.JoystickDirection);
         }
