@@ -19,6 +19,8 @@ public class GrabThrow : MonoBehaviour
     private bool movedToHand = false;
     public bool collided = false;
     private Transform initialTransform;
+    public GameObject explosionPrefab;
+    
 
     private void Start()
     {
@@ -140,8 +142,14 @@ public class GrabThrow : MonoBehaviour
         {
             collided = true;
             gameObject.SetActive(false);
+            Quaternion alignToNormal = Quaternion.FromToRotation(explosionPrefab.transform.forward, collision.contacts[0].normal);
+            Debug.Log(alignToNormal.eulerAngles);
+            GameObject explosion = Instantiate(explosionPrefab, transform.position, alignToNormal);
+            Destroy(explosion, 1.5f);
         }
+
         
+
     }
 
     IEnumerator Respawn(float respawnTime)

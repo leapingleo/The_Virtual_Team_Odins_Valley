@@ -48,6 +48,7 @@ public class Crate : GrabThrow
             transform.GetChild(1).gameObject.SetActive(true);
             StartCoroutine(DestroyObjects(0.125f, 0.75f));
             StartCoroutine(ReleaseCollectibles(0.085f));
+
         }
     }
 
