@@ -124,8 +124,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.003277583, y: 0.0038134935, z: 0.005980841}
-  m_Center: {x: 0.00049629016, y: 0.00027934433, z: 0.0042047217}
+  m_Size: {x: 0.0010516434, y: 0.003951363, z: 0.0040651867}
+  m_Center: {x: 0.00023690397, y: 0.0015312386, z: 0.003325582}
 --- !u!114 &1610099500348036288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -680,8 +680,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.003277583, y: 0.0038134935, z: 0.005980841}
-  m_Center: {x: 0.00049629016, y: 0.00027934433, z: 0.0042047217}
+  m_Size: {x: 0.0018975427, y: 0.0037607395, z: 0.0037810912}
+  m_Center: {x: 0.00011210898, y: 0.0012954737, z: 0.0034522754}
 --- !u!114 &1610099501166674689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1249,6 +1249,7 @@ MonoBehaviour:
   crowGlideTransform: {fileID: 983339753496598128}
   crowStandardTransform: {fileID: 2860884373484911114}
   crow: {fileID: 7678932566084243925}
+  checkPointRate: 0
 --- !u!1 &1610099502317526062
 GameObject:
   m_ObjectHideFlags: 0

@@ -28,11 +28,11 @@ public class AxeCollision : MonoBehaviour
         {
             if (other.CompareTag("Throwable"))
             {
-                Enemy enemyScript = other.gameObject.GetComponent<Enemy>();
+                EnemyAI enemyScript = other.gameObject.GetComponent<EnemyAI>();
 
                 if (enemyScript)
                 {
-                    other.gameObject.GetComponent<Enemy>().GetHitByAxe();
+                    other.gameObject.GetComponent<EnemyAI>().GetHitByAxe();
                 }
             }
 
@@ -46,6 +46,14 @@ public class AxeCollision : MonoBehaviour
                 other.gameObject.GetComponent<Orb>().GetHitByAxe();
             }
         }
+        else
+        {
+            if (other.CompareTag("Player"))
+            {
+                other.gameObject.GetComponent<CharacterMovement>().GetHitByEnemyAxe();
+            }
+        }
+
     }
 
 }

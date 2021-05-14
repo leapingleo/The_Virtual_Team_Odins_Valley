@@ -5,24 +5,36 @@ using UnityEngine;
 public class EnemyVisionSphere : MonoBehaviour
 {
     private bool detectedPlayer = false;
-    private Vector3 playerPosition = Vector3.zero;
+    private GameObject player = null;
 
     public bool PlayerDetected()
     {
         return detectedPlayer;
     }
 
+    // Behaviour tree will check if player is detected,
+    // so its okay if player has already been seen. 
     public Vector3 PlayerPosition()
     {
-        return playerPosition;
+        if (player != null)
+        {
+            return player.transform.position;
+        }
+        else
+        {
+            return Vector3.zero;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            detectedPlayer = true;
-            playerPosition = other.gameObject.transform.position;
+            if (!detectedPlayer)
+            {
+                detectedPlayer = true;
+                player = other.gameObject;
+            }
         }
     }
 
@@ -30,19 +42,14 @@ public class EnemyVisionSphere : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            detectedPlayer = true;
-            playerPosition = other.gameObject.transform.position;
+            if (!detectedPlayer)
+            {
+                detectedPlayer = true;
+                player = other.gameObject;
+            }
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            detectedPlayer = false;
-            playerPosition = Vector3.zero;
-        }
-    }
 
 
 }

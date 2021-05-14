@@ -465,4 +465,13 @@ public class CharacterMovement : MonoBehaviour
         canCheckGround = true;
     }
 
+    public void GetHitByEnemyAxe()
+    {
+        Debug.Log("hit");
+        /*
+        * THIS IS THE LOGIC FOR WHEN THE PLAYER GETS HIT!
+        */
+
+    }
+
 }

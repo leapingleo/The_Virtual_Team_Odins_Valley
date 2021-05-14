@@ -4,58 +4,76 @@ using UnityEngine;
 
 public class GrabThrow : MonoBehaviour
 {
+    [Header("Grab Throw Attributes")]
     public Rigidbody rb;
     public BoxCollider bc;
     public float moveToSpeed;
     public float moveAwaySpeed;
-    public float respawnTime;
     public float angularVelocityMultiplier;
     
     public bool canBeGrabThrown = true;
-    public bool respawn = false;
     public bool grabbed = false;
-    private bool moveToHandInit = true;
-    private bool moveAwayHandInit = true;
-    private bool movedToHand = false;
+    protected bool movedToHand = false;
     public bool collided = false;
-    private Transform initialTransform;
+    protected bool movedToReleasePosition = false;
+    public bool respawn = false;
+    protected Vector3 initialPosition = Vector3.zero;
+    protected Quaternion initialRotation = Quaternion.identity;
+    private TrailRenderer trailRenderer = null;
     public GameObject explosionPrefab;
+    protected float timer = -1;
+    private float respawnTime = 10f;
     
+
 
     private void Start()
     {
-        initialTransform = transform;
+        if (respawn)
+        {
+            initialPosition = transform.position;
+            initialRotation = transform.rotation;
+            trailRenderer = GetComponent<TrailRenderer>();
+        }
+            
     }
 
-    public void ResetAttributes()
+    private void Update()
     {
-        grabbed = false;
-        canBeGrabThrown = true;
-        moveToHandInit = true;
-        moveAwayHandInit = true;
-        movedToHand = false;
-        collided = false;
+        /*
+        * This essentially respawns something after period of time
+        */
+
+        if (timer > -1)
+        {
+            timer -= Time.deltaTime;
+
+            if (timer < 0)
+            {
+                grabbed = false;
+                transform.position = initialPosition;
+                transform.rotation = initialRotation;
+                bc.enabled = true;
+                rb.useGravity = true;
+                trailRenderer.enabled = true;
+                transform.GetChild(0).gameObject.SetActive(true);
+                timer = -1;
+            }
+        }
     }
 
 
     public void MoveToHand(Transform controller)
     {
-        if (moveToHandInit)
-        {
-            MoveToHandInit();
-            moveToHandInit = false;
-        }
-
         if (!movedToHand)
         {
-            WhileMoving();
-
             float distance = Vector3.Distance(transform.position, controller.position);
 
             if (distance < 0.1)
             {
-                MovedToHandInit(controller);
-                movedToHand = true;
+                rb.velocity = Vector3.zero;
+                transform.position = controller.position;
+                transform.rotation = controller.rotation;
+                transform.parent = controller;
             }
             else
             {
@@ -66,96 +84,70 @@ public class GrabThrow : MonoBehaviour
 
     public void MoveToReleasePosition(Vector3 point)
     {
-        if (!collided)
+        if (!movedToReleasePosition)
         {
-            if (moveAwayHandInit)
-            {
-                MoveAwayHandInit();
-                moveAwayHandInit = false;
-            }
-
-            WhileMoving();
             rb.velocity = (point - transform.position).normalized * moveAwaySpeed * Time.fixedDeltaTime;
         }
     }
 
-    public virtual void MovedToHandInit(Transform controller)
+    public void CallMoveToHandInit()
     {
-        rb.velocity = Vector3.zero;
-        transform.position = controller.position;
-        transform.rotation = controller.rotation;
-        transform.parent = controller;
+        MoveToHandInit();
     }
 
+    /*
+     * METHOD IS CALLED BY OBJECT DETECTOR
+     */
     public virtual void MoveToHandInit()
     {
+        movedToHand = false;
         rb.angularVelocity = transform.up * angularVelocityMultiplier * Time.fixedDeltaTime;
         bc.enabled = false;
         rb.useGravity = false;
     }
 
-    public virtual void MoveAwayHandInit()
+    public void CallMoveToReleasePositionInit()
     {
+        MoveToReleasePositionInit();
+    }
+
+    /*
+     * METHOD IS CALLED BY OBJECT DETECTOR
+     */
+    public virtual void MoveToReleasePositionInit()
+    {
+        movedToHand = true;
+        movedToReleasePosition = false;
         grabbed = true;
         transform.parent = null;
         bc.enabled = true;
-    }
-
-    public virtual void WhileMoving()
-    {
-
-    }
-
-    public virtual void Collision(Collision collision)
-    {
-        gameObject.SetActive(false);
-
-        //if (respawn)
-        //{
-        //    transform.GetChild(0).gameObject.SetActive(false);
-        //    //StartCoroutine(Respawn(respawnTime));
-        //    BecomeRespawned();
-        //}
-        //else
-        //{
-        //    gameObject.SetActive(false);
-        //}
-    }
-
-    public virtual void BecomeRespawned()
-    {
-        canBeGrabThrown = true;
-        grabbed = false;
-        moveToHandInit = true;
-        moveAwayHandInit = true;
-        movedToHand = false;
-        bc.enabled = true;
-        rb.useGravity = true;
-        rb.angularVelocity = Vector3.zero;
-        collided = false;
-        transform.GetChild(0).gameObject.SetActive(true);
     }
 
     void OnCollisionEnter(Collision collision)
     {
         if (grabbed)
         {
-            collided = true;
-            gameObject.SetActive(false);
+            movedToReleasePosition = true;
+            if (respawn)
+            {
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                bc.enabled = false;
+                rb.useGravity = false;
+                trailRenderer.enabled = false;
+                transform.GetChild(0).gameObject.SetActive(false);
+                timer = respawnTime;
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
             Quaternion alignToNormal = Quaternion.FromToRotation(explosionPrefab.transform.forward, collision.contacts[0].normal);
-            Debug.Log(alignToNormal.eulerAngles);
             GameObject explosion = Instantiate(explosionPrefab, transform.position, alignToNormal);
             Destroy(explosion, 1.5f);
         }
 
         
-
-    }
-
-    IEnumerator Respawn(float respawnTime)
-    {
-        yield return new WaitForSeconds(respawnTime);
-        BecomeRespawned();    
     }
 
 

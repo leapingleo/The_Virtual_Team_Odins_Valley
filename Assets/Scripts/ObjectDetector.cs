@@ -72,8 +72,7 @@ public class ObjectDetector : MonoBehaviour
             if (detectedObject.CompareTag("Reset"))
                 detectedObject.GetComponent<RestPlayer>().Reset();
 
-            if ((detectedObject.CompareTag("Throwable") || detectedObject.CompareTag("Crate") ||
-                detectedObject.CompareTag("Shuriken")) 
+            if ((detectedObject.CompareTag("Throwable") || detectedObject.CompareTag("Crate") || detectedObject.CompareTag("Shuriken"))
                 && detectedObject.GetComponent<GrabThrow>().canBeGrabThrown)
             {
                 GrabObject(detectedObject);
@@ -82,13 +81,17 @@ public class ObjectDetector : MonoBehaviour
         else if (!triggerPressed && detectedObject != null)
         {
             RaycastHit shootHit;
-            if (detectedObject.CompareTag("Throwable") || detectedObject.CompareTag("Crate") || detectedObject.CompareTag("Shuriken"))
+            if ((detectedObject.CompareTag("Throwable") || detectedObject.CompareTag("Crate") || detectedObject.CompareTag("Shuriken")) && detectedObject.GetComponent<GrabThrow>().canBeGrabThrown)
             {
                 if (Physics.Raycast(transform.position, transform.forward, out shootHit, 10))
-                    detectedObject.GetComponent<GrabThrow>().MoveToReleasePosition(shootHit.point);
-                
+                {
+                    ReleaseObject(detectedObject, shootHit.point);
+                }
                 else
-                    detectedObject.GetComponent<GrabThrow>().MoveToReleasePosition(transform.position + transform.forward * 10);
+                {
+                    ReleaseObject(detectedObject, transform.position + transform.forward * 10);
+                }
+                    
             }
             detectedObject = null;
         }
@@ -167,6 +170,13 @@ public class ObjectDetector : MonoBehaviour
 
     void GrabObject(GameObject obj)
     {
+        obj.GetComponent<GrabThrow>().CallMoveToHandInit();
         obj.GetComponent<GrabThrow>().MoveToHand(transform);
+    }
+
+    void ReleaseObject(GameObject obj, Vector3 releasePosition)
+    {
+        obj.GetComponent<GrabThrow>().CallMoveToReleasePositionInit();
+        obj.GetComponent<GrabThrow>().MoveToReleasePosition(releasePosition);
     }
 }
