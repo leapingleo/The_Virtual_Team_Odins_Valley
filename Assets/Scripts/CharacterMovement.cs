@@ -35,18 +35,22 @@ public class CharacterMovement : MonoBehaviour
     public GameObject leftAxe;
     public GameObject rightAxe;
     private Vector3 moveDir;
-    private float verticalVel;
-    private float gravity = 4f;
+    private Vector3 planeVerticalVel;
+    private Vector3 gravity;
     private bool grounded;
     private float glideFactor;
     private bool falling;
     public float glideForceFactor;
-   
+    private Vector3 groundNormal;
+    Quaternion alignWithSurfaceRot;
+
+    private bool usingCustomGravity = false;
 
 
     // Start is called before the first frame update
     void Start()
     {
+       // verticalVel = new Vector3(-1f, 1f, 0f);
         gliding = false;
         jumping = false;
         canCheckGround = false;
@@ -121,42 +125,69 @@ public class CharacterMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (grounded)
-        {
-            verticalVel = -gravity * Time.fixedDeltaTime;
-            if (ActionController.Instance.MainButtonReleased)
-                verticalVel = jumpForce * 0.5f;
-            
-            moveDir = new Vector3( ActionController.Instance.JoystickDirection.x, verticalVel, ActionController.Instance.JoystickDirection.z);
-            Move(moveDir);
-        } else
-        {
-            //slowly increasing jump velocity unitil reach max jump force
-            if (verticalVel < jumpForce && !falling)
-                verticalVel += 0.5f;
-            else
-            {
-                falling = true;
+        //  GroundCheck();
+         JumpOnDifferentGravity();
 
-                //holding jump button changes verticalVel based on glideFactor
-                glideFactor = ActionController.Instance.MainButtonPressed ? glideForceFactor : 1f;
-                    
-                verticalVel -= gravity * Time.fixedDeltaTime;
-                verticalVel *= glideFactor;
-                
-            }
+        /*
+        if (grounded && ActionController.Instance.MainButtonReleased)
+        {
+            rigidBody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
         }
-        Vector3 jumpDir = new Vector3(ActionController.Instance.JoystickDirection.x * 0.5f, verticalVel, ActionController.Instance.JoystickDirection.z * 0.5f);
-        FacePosition(ActionController.Instance.JoystickDirection);
-        rigidBody.velocity = jumpDir;
 
+        if (ActionController.Instance.MainButtonPressed)
+        {
+            float glidingY = rigidBody.velocity.y * 0.2f;
+            rigidBody.velocity = new Vector3(rigidBody.velocity.x, glidingY, rigidBody.velocity.z);
+        }
 
+        Move(ActionController.Instance.JoystickDirection);
+        */
 
-        if (GroundCheck() && ActionController.Instance.SecondaryButtonPressed)
+        if (grounded && ActionController.Instance.SecondaryButtonPressed)
         {
             anim.SetTrigger("attack");
         }
+    }
 
+    void JumpOnDifferentGravity()
+    {
+        rigidBody.useGravity = false;
+       
+        alignWithSurfaceRot = Quaternion.FromToRotation(Vector3.up, groundNormal);
+        moveDir = new Vector3(ActionController.Instance.JoystickDirection.x, 0, ActionController.Instance.JoystickDirection.z);
+
+        if (grounded)
+        {
+            planeVerticalVel = -gravity * Time.fixedDeltaTime;
+
+            if (ActionController.Instance.MainButtonReleased)
+                planeVerticalVel = groundNormal * jumpForce * 0.5f;
+
+            moveDir = moveDir.normalized + planeVerticalVel;
+            //rotate the move direction
+            moveDir = alignWithSurfaceRot * moveDir;
+
+            Move(moveDir);
+        }
+        else
+        {
+            falling = true;
+            //holding jump button changes verticalVel based on glideFactor
+            glideFactor = ActionController.Instance.MainButtonPressed ? glideForceFactor : 1f;
+            planeVerticalVel -= gravity * Time.fixedDeltaTime;
+            planeVerticalVel *= glideFactor;
+        }
+        Vector3 jumpDir = Quaternion.FromToRotation(Vector3.up, groundNormal) * ActionController.Instance.JoystickDirection * 0.5f +
+            planeVerticalVel;
+
+        if (falling)
+        {
+            if (ActionController.Instance.JoystickDirection.magnitude <= 0f)
+                transform.rotation = alignWithSurfaceRot;
+            else //moving while gliding, transform joystick direction so it aligns with the plane
+                transform.rotation = Quaternion.LookRotation(alignWithSurfaceRot * ActionController.Instance.JoystickDirection, groundNormal);
+        }
+        rigidBody.velocity = jumpDir;
     }
 
     public void Move(Vector3 dir)
@@ -173,18 +204,27 @@ public class CharacterMovement : MonoBehaviour
         if (ActionController.Instance.JoystickDirection != Vector3.zero)
         {
             anim.SetTrigger("walk");
-            
-            rigidBody.MovePosition(transform.position + moveDir * speed * Time.fixedDeltaTime);
-            FacePosition(ActionController.Instance.JoystickDirection);
+
+
+            transform.rotation = Quaternion.LookRotation(dir, groundNormal);
+            rigidBody.MovePosition(transform.position + dir * speed * Time.fixedDeltaTime);
+           
+           // FacePosition(ActionController.Instance.JoystickDirection);
         }
         else
         {
+            transform.rotation = alignWithSurfaceRot;
+         //   rigidBody.angularVelocity = Vector3.zero;
             anim.SetTrigger("idle");
         }
     }
 
+    
     private void OnCollisionStay(Collision collision)
     {
+        groundNormal = collision.contacts[0].normal;
+        gravity = groundNormal * 4f;
+        planeVerticalVel = groundNormal;
         falling = false;
         glideFactor = 0.1f;
         grounded = true;
@@ -194,6 +234,7 @@ public class CharacterMovement : MonoBehaviour
     {
         grounded = false;
     }
+    
 
     public void SetGliding(bool gliding)
     {
@@ -252,12 +293,39 @@ public class CharacterMovement : MonoBehaviour
         
     }
 
+    /*
     private bool GroundCheck()
     {
         return Physics.Raycast(groundCheckTransform.position, -transform.up, groundCheckDistance, LayerMask.GetMask("Default"));
     }
+    */
+    private void GroundCheck()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(groundCheckTransform.position, -transform.up, out hit, groundCheckDistance, LayerMask.GetMask("Default")))
+        {
+            grounded = true;
 
-    private void EnterGround()
+            if (usingCustomGravity)
+            {
+                groundNormal = hit.normal;
+                gravity = groundNormal * 4f;
+                planeVerticalVel = groundNormal;
+                falling = false;
+                glideFactor = 0.1f;
+            } else
+            {
+                groundNormal = Vector3.up;
+                planeVerticalVel = Vector3.up;
+            }
+        }
+        else
+        {
+            grounded = false;
+        }
+    }
+
+private void EnterGround()
     {
         SetGliding(false);
         jumping = false;
@@ -272,8 +340,8 @@ public class CharacterMovement : MonoBehaviour
     //Jump is called by action controller script
     public void Jump()
     {
-        Vector3 antiGravity = Physics.gravity * -jumpForce;
-        rigidBody.AddForce(antiGravity, ForceMode.Impulse);
+      //  Vector3 antiGravity = Physics.gravity * -jumpForce;
+       // rigidBody.AddForce(antiGravity, ForceMode.Impulse);
         jumping = true;
         anim.SetTrigger("jump_start");
         StartCoroutine(StartToCheckGround(0.001f));
