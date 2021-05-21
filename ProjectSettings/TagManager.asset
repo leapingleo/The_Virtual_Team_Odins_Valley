@@ -21,6 +21,7 @@ TagManager:
   - RotatableNotWithPlayer
   - Shuriken
   - UICollectable
+  - gravitymodifier
   layers:
   - Default
   - TransparentFX
@@ -34,8 +35,8 @@ TagManager:
   - GrabThrow
   - Ignore
   - Island
-  - 
-  - 
+  - GravityInteractable
+  - Gravity
   - 
   - 
   - 

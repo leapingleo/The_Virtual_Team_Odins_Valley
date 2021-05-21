@@ -32,7 +32,7 @@ public class ObjectDetector : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        int layer =  LayerMask.GetMask("GrabThrow") | LayerMask.GetMask("Interactable") | LayerMask.GetMask("Island");
+        int layer =  LayerMask.GetMask("GrabThrow") | LayerMask.GetMask("Interactable") | LayerMask.GetMask("GravityInteractable") | LayerMask.GetMask("Island");
 
 
         if (hand == Hand.LEFT)
