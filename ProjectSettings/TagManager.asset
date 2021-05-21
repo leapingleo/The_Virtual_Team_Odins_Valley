@@ -20,6 +20,7 @@ TagManager:
   - GrabableNotWithPlayer
   - RotatableNotWithPlayer
   - Shuriken
+  - UICollectable
   layers:
   - Default
   - TransparentFX

@@ -15,8 +15,6 @@ public class CharacterMovement : MonoBehaviour
      * Called when the character is falling, as in velocity > 0
      */
     public float lowJumpMultiplier;
-    
- 
     public float jumpForce;
     public Rigidbody rigidBody;
     public float glideDistanceFactor;
@@ -35,7 +33,6 @@ public class CharacterMovement : MonoBehaviour
     public GameObject rightAxe;
     public float glideForceFactor;
 
-
     public Transform crowGlideTransform;
     public Transform crowStandardTransform;
     public GameObject crow;
@@ -47,6 +44,15 @@ public class CharacterMovement : MonoBehaviour
     private bool jumpRequest = false;
     private bool holdingDownMainButton = false;
     private bool holdingDownGlideButton = false;
+    private Vector3 checkPointPos;
+    public Vector3 CheckPointPos { get { return checkPointPos; } set { checkPointPos = value; } }
+
+    private Vector3 groundNormal;
+    private int lives = 99;
+    public int Lives { get { return lives; }  set { lives = value; } }
+    private int collected = 99;
+    public int Collected { get { return collected; }  set { collected = value; } }
+
 
     // Start is called before the first frame update
     void Start()
@@ -57,9 +63,12 @@ public class CharacterMovement : MonoBehaviour
 
     private void Update()
     {
+        if (transform.position.y < 0.25f)
+            transform.position = checkPointPos;
 
         if (ActionController.Instance.MainButtonDown)
         {
+            ActionController.Instance.SetMainButtonDown(false);
             jumpTimer = jumpActivateTime;
         }
 
@@ -103,9 +112,14 @@ public class CharacterMovement : MonoBehaviour
             anim.SetTrigger("attack");
         }
 
-        moveDir = new Vector3(ActionController.Instance.JoystickDirection.x, 0f, ActionController.Instance.JoystickDirection.z).normalized;
+        if (ActionController.Instance.JoystickDirection.sqrMagnitude > 0.01f * 0.01f)
+        {
+            moveDir = new Vector3(ActionController.Instance.JoystickDirection.x, 0f, ActionController.Instance.JoystickDirection.z);
+        }
+        else
+            moveDir = Vector3.zero;
 
-        if (moveDir != Vector3.zero)
+        if (moveDir.sqrMagnitude > 0.01f * 0.01f)
         {
             if (grounded)
                 anim.SetTrigger("walk");
@@ -167,6 +181,12 @@ public class CharacterMovement : MonoBehaviour
         
     }
 
+    private void OnCollisionStay(Collision collision)
+    {
+        groundNormal = collision.contacts[0].normal;
+        
+    }
+
     public void Move(Vector3 dir)
     {
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("attack01") || anim.GetCurrentAnimatorStateInfo(0).IsName("attack02"))
@@ -178,7 +198,7 @@ public class CharacterMovement : MonoBehaviour
             speed = moveSpeed;
         }
 
-        if (dir != Vector3.zero)
+        if (dir.sqrMagnitude > 0.01f * 0.01f)
         { 
             rigidBody.MovePosition(transform.position + moveDir * speed * Time.fixedDeltaTime);
         }

@@ -11,6 +11,8 @@ public class OdinPart : MonoBehaviour
     public float rotationSpeed;
 
     private bool moveToOdin;
+    private GameObject flyToHand;
+    private CharacterMovement player;
 
     /*
      * Yes, this is expensive, but passing by reference would be tedious and time consuming
@@ -20,6 +22,8 @@ public class OdinPart : MonoBehaviour
         child = transform.GetChild(0);
         odinStatue = GameObject.FindGameObjectWithTag("Odin");
         odinDirection = (odinStatue.transform.position - transform.position).normalized;
+        flyToHand = GameObject.FindGameObjectWithTag("UICollectable");
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMovement>();
     }
 
     public void InstantiateOdinPart()
@@ -32,7 +36,8 @@ public class OdinPart : MonoBehaviour
     {
         if (moveToOdin)
         {
-            transform.Translate((odinDirection) * moveToStatueSpeed * Time.deltaTime);
+            Vector3 flyDir = (flyToHand.transform.position - transform.position).normalized;
+            transform.Translate(flyDir * moveToStatueSpeed * Time.deltaTime);
         }
 
         child.RotateAround(transform.position, transform.up, rotationSpeed * Time.deltaTime);
@@ -52,7 +57,14 @@ public class OdinPart : MonoBehaviour
             transform.parent.GetComponent<AudioSource>().Play();
             moveToOdin = true;
             odinStatue.GetComponent<Odin>().AddPart();
-            StartCoroutine(DestroyObject(0.75f));
+          //  StartCoroutine(DestroyObject(0.75f));
+        }
+        if (other.CompareTag("UICollectable"))
+        {
+            player.Collected += 1;
+            if (player.Collected % 50 == 0)
+                player.Lives += 1;
+            Destroy(gameObject);
         }
     }
     

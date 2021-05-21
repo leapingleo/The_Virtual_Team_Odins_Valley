@@ -138,10 +138,15 @@ public class ActionController : MonoBehaviour
         rightTriggerPressed = true;
     }
 
+    public void SetMainButtonDown(bool mainButtonDown)
+    {
+        this.mainButtonDown = mainButtonDown;
+    }
+
     private void Update()
     {
-        mainButtonDown = false;
-        mainButtonReleased = false;
+       // mainButtonDown = false;
+       // mainButtonReleased = false;
     }
 
     //private void LateUpdate()

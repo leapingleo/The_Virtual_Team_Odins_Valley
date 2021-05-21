@@ -62,7 +62,7 @@ public class TargetScript : MonoBehaviour
 
         for (int i = 0; i < numCollectibles; i++)
         {
-            collectibles[i].gameObject.SetActive(false);
+         //   collectibles[i].gameObject.SetActive(false);
         }
         gameObject.SetActive(false);
     }

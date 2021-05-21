@@ -10,6 +10,8 @@ public class PlayerGrounded : MonoBehaviour
     {
         if (other.gameObject.layer != 9 || other.gameObject.layer != 10)
             grounded = true;
+
+       
     }
 
     private void OnTriggerExit(Collider other)
@@ -17,6 +19,8 @@ public class PlayerGrounded : MonoBehaviour
         if (other.gameObject.layer != 9 || other.gameObject.layer != 10)
             grounded = false;
     }
+
+   
 
 
 }

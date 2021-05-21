@@ -85,11 +85,12 @@ public class Crate : GrabThrow
 
         transform.GetChild(0).gameObject.SetActive(false);
 
+
         yield return new WaitForSeconds(time01);
 
         for (int i = 0; i < numCollectibles; i++)
         {
-            collectibles[i].gameObject.SetActive(false);
+         //   collectibles[i].gameObject.SetActive(false);
         }
         gameObject.SetActive(false);
     }
