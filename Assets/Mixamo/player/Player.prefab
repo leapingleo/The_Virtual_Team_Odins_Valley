@@ -1645,6 +1645,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5845f887b25a8104d826e3e071da9cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Lives: 0
+  Collected: 0
+  CheckPointPos: {x: 0, y: 0, z: 0}
   fallingMultiplier: 0.55
   lowJumpMultiplier: 0.85
   jumpForce: 35
@@ -1663,10 +1666,14 @@ MonoBehaviour:
   anim: {fileID: 2993743617822629318}
   leftAxe: {fileID: 2993743616504717296}
   rightAxe: {fileID: 2993743617068059283}
+  rightLeg: {fileID: 2993743617279228659}
+  leftLeg: {fileID: 2993743616135205667}
+  dustParticlePrefab: {fileID: 6323036991389501425, guid: 4e6b42638862d3d4bba5247ed29132fd, type: 3}
   glideForceFactor: 0.5
   crowGlideTransform: {fileID: 2993743616404405530}
   crowStandardTransform: {fileID: 2993743616363343754}
   crow: {fileID: 2993743615813697104}
+  inverseControlsThreshold: 0.85
 --- !u!114 &2993743617822629317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1749,7 +1756,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6782169781789035635}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.37, z: 0}
+  m_LocalPosition: {x: 0, y: -0.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2993743617822629312}

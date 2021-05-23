@@ -41,7 +41,13 @@ public class CharacterMovement : MonoBehaviour
     public Animator anim;
     public GameObject leftAxe;
     public GameObject rightAxe;
+
+    public Transform rightLeg;
+    public Transform leftLeg;
+    public GameObject dustParticlePrefab;
+
     public float glideForceFactor;
+
 
 
     public Transform crowGlideTransform;
@@ -56,6 +62,8 @@ public class CharacterMovement : MonoBehaviour
     private bool holdingDownMainButton = false;
     private bool holdingDownGlideButton = false;
     private bool usingGravity = false;
+    public float inverseControlsThreshold;
+    private ParticleSystem dustParticle;
 
     private bool movingUpsideDownNonInverse = false;
     
@@ -64,6 +72,7 @@ public class CharacterMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        dustParticle = Instantiate(dustParticlePrefab, transform.position, Quaternion.identity, transform).GetComponent<ParticleSystem>();
         rigidBody.useGravity = false;
         customGravity.SetRigidBody(rigidBody);
     }
@@ -101,6 +110,13 @@ public class CharacterMovement : MonoBehaviour
             }
         }
 
+        if (!grounded && !anim.GetCurrentAnimatorStateInfo(0).IsName("jump_start")
+            && !anim.GetCurrentAnimatorStateInfo(0).IsName("jump_mid_air")
+            && !anim.GetCurrentAnimatorStateInfo(0).IsName("jump_end"))
+        {
+            anim.SetTrigger("fall");
+        }
+
         if (grounded && anim.GetCurrentAnimatorStateInfo(0).IsName("jump_mid_air"))
         {
             anim.SetTrigger("jump_end");
@@ -136,12 +152,12 @@ public class CharacterMovement : MonoBehaviour
          * HOWEVER, if the character stops in an upside down area, then the controls are no longer inverted.
          */
 
-        if (playerNormal.GroundNormal.y == -1 && moveDir == Vector3.zero)
+        if (playerNormal.GroundNormal.y < -inverseControlsThreshold && moveDir == Vector3.zero)
         {
             movingUpsideDownNonInverse = true;
         }
         
-        if (movingUpsideDownNonInverse && playerNormal.GroundNormal.y != -1 && moveDir == Vector3.zero)
+        if (movingUpsideDownNonInverse && playerNormal.GroundNormal.y >= -inverseControlsThreshold && moveDir == Vector3.zero)
         {
             movingUpsideDownNonInverse = false;
         }
@@ -154,7 +170,7 @@ public class CharacterMovement : MonoBehaviour
             /*
              * Inverse the rotation as well.
              */
-            if (playerNormal.GroundNormal.y == -1)
+            if (playerNormal.GroundNormal.y < -inverseControlsThreshold)
             {
                 if (movingUpsideDownNonInverse)
                 {
@@ -204,6 +220,8 @@ public class CharacterMovement : MonoBehaviour
 
         if (!grounded)
         {
+            
+
             if (holdingDownGlideButton)
             {
                 glideFactor = glideForceFactor;
@@ -238,7 +256,7 @@ public class CharacterMovement : MonoBehaviour
             customGravity.gravityScale = lowJumpMultiplier;
         }
 
-        if (playerNormal.GroundNormal.y == -1)
+        if (playerNormal.GroundNormal.y < -inverseControlsThreshold)
         {
             if (movingUpsideDownNonInverse)
             {
@@ -313,6 +331,18 @@ public class CharacterMovement : MonoBehaviour
         * THIS IS THE LOGIC FOR WHEN THE PLAYER GETS HIT!
         */
 
+    }
+
+    public void ParticleLeftLeg()
+    {
+        dustParticle.transform.position = leftLeg.transform.position;
+        dustParticle.Play();
+    }
+
+    public void ParticleRightLeg()
+    {
+        dustParticle.transform.position = rightLeg.transform.position;
+        dustParticle.Play();
     }
 
 }

@@ -19,19 +19,19 @@ public class PlayerNormal : MonoBehaviour
     public void FixedUpdate()
     {
         RaycastHit hit;
+
         
-        
-        if (Physics.Raycast(transform.position, -transform.up, out hit, 1f, gravityLayers))
+        if (Physics.Raycast(transform.position, -transform.up, out hit, 0.065f, gravityLayers))
         {
             groundNormal = hit.normal;
             usingGravity = true;
         }
-        else if (Physics.Raycast(transform.position, -transform.up, out hit, 1f, nonGravityLayers))
+        else if (Physics.Raycast(transform.position, -transform.up, out hit, 0.065f, nonGravityLayers))
         {
             groundNormal = Vector3.up;
             usingGravity = false;
         }
-           
+
 
         alignWithSurfaceRot = Quaternion.FromToRotation(Vector3.up, groundNormal);
     }
