@@ -24,8 +24,6 @@ public class ObjectDetector : MonoBehaviour
     {
         actionController = GetComponent<ActionController>();
       //  lineRenderer = GetComponent<LineRenderer>();
-
-
     }
 
     // Update is called once per frame
@@ -153,13 +151,21 @@ public class ObjectDetector : MonoBehaviour
 
     void SetIndicatorPos(Vector3 pos)
     {
+        if (ActionController.Instance.gripPressedValue > 0)
+            indicatorSphere.SetActive(false);
+        else
+            indicatorSphere.SetActive(true);
+
         indicatorSphere.transform.position = pos;
         indicatorSphere.transform.rotation = Quaternion.FromToRotation(Vector3.up, hitNormal);
     }
 
     void DrawIndicatorRay(Vector3 startPos, Vector3 endPos, float width)
     {
-        lineRenderer.enabled = true;
+        if (ActionController.Instance.gripPressedValue > 0)
+            lineRenderer.enabled = false;
+        else
+            lineRenderer.enabled = true;
 
         lineRenderer.startWidth = width;
         lineRenderer.endWidth = width;

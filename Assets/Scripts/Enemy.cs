@@ -18,6 +18,7 @@ public class Enemy : GrabThrow
     private float timer;
     private EnemyState state;
     private float standardMovementSpeed;
+    public GameObject burstParticle;
 
     public enum EnemyState { IDLE, WALK, GRABBED, PLAYER_DETECTED, ATTACKING_PLAYER, DIZZY };
 
@@ -175,6 +176,8 @@ public class Enemy : GrabThrow
     {
         if (collision.gameObject.layer == 9 && collision.gameObject.GetComponent<GrabThrow>().grabbed)
         {
+            GameObject particle = Instantiate(burstParticle, collision.contacts[0].point, Quaternion.identity);
+            Destroy(particle, 0.5f);
             GetHit(1);
         }
 

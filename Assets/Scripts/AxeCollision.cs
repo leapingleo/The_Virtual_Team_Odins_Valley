@@ -7,6 +7,8 @@ public class AxeCollision : MonoBehaviour
 
     public BoxCollider collider;
     public bool playerAxe;
+    public GameObject burstParticle;
+
     void Start()
     {
         collider.enabled = false;
@@ -29,10 +31,13 @@ public class AxeCollision : MonoBehaviour
             if (other.CompareTag("Throwable"))
             {
                 EnemyAI enemyScript = other.gameObject.GetComponent<EnemyAI>();
-
+                GameObject particle = Instantiate(burstParticle, transform.position, Quaternion.identity);
+                Destroy(particle, 0.5f);
+                Debug.Log("enemy");
                 if (enemyScript)
                 {
                     other.gameObject.GetComponent<EnemyAI>().GetHitByAxe();
+                   
                 }
             }
 

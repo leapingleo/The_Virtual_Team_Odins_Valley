@@ -5952,12 +5952,12 @@ MonoBehaviour:
   bc: {fileID: 3805235044155921858}
   moveToSpeed: 50
   moveAwaySpeed: 100
-  respawnTime: 0
   angularVelocityMultiplier: 80
   canBeGrabThrown: 1
-  respawn: 0
   grabbed: 0
   collided: 0
+  respawn: 0
+  explosionPrefab: {fileID: 6323036991389501425, guid: 663d81278822fae47b06ae6fdcf1162b, type: 3}
   collectible: {fileID: 8558824345279697991, guid: 2c27fc16e4984904daf7558198072836, type: 3}
   numCollectibles: 4
 --- !u!54 &3992000153747101308

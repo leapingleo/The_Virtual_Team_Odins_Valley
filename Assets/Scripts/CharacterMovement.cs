@@ -6,12 +6,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class CharacterMovement : MonoBehaviour
 {
-    /*
-     * Added this to ensure i dont get error, needs to be changed, sorry yiyi.
-     */
-    public float Lives;
-    public float Collected;
-    public Vector3 CheckPointPos;
 
     /*
      * Called when velocity < 0, as in rising.
@@ -48,8 +42,6 @@ public class CharacterMovement : MonoBehaviour
 
     public float glideForceFactor;
 
-
-
     public Transform crowGlideTransform;
     public Transform crowStandardTransform;
     public GameObject crow;
@@ -66,7 +58,14 @@ public class CharacterMovement : MonoBehaviour
     private ParticleSystem dustParticle;
 
     private bool movingUpsideDownNonInverse = false;
-    
+
+    private Vector3 checkPointPos;
+    public Vector3 CheckPointPos { get { return checkPointPos; } set { checkPointPos = value; } }
+    private int lives = 99;
+    public int Lives { get { return lives; } set { lives = value; } }
+    private int collected = 99;
+    public int Collected { get { return collected; } set { collected = value; } }
+
 
 
     // Start is called before the first frame update
@@ -79,6 +78,8 @@ public class CharacterMovement : MonoBehaviour
 
     private void Update()
     {
+        if (transform.position.y < 0.25f)
+            transform.position = checkPointPos;
 
         /*
          * What can happen is that the player might jump off the gravity ledge 

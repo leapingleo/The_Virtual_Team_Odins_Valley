@@ -29,12 +29,17 @@ public class Crate : GrabThrow
 
     private void OnCollisionEnter(Collision collision)
     {
+       
+
         if (grabbed)
         {
+            Quaternion alignToNormal = Quaternion.FromToRotation(explosionPrefab.transform.forward, collision.contacts[0].normal);
+            GameObject explosion = Instantiate(explosionPrefab, transform.position, alignToNormal);
+            Destroy(explosion, 1.5f);
             GetComponent<BoxCollider>().enabled = false;
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
-            parent.GetComponent<AudioSource>().Play();
+          //  parent.GetComponent<AudioSource>().Play();
             StartCoroutine(DestroyObjects(0.125f, 0.75f));
             StartCoroutine(ReleaseCollectibles(0.085f));
             

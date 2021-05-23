@@ -15,6 +15,8 @@ public class ActionController : MonoBehaviour
     public InputAction rightTriggerButton;
     public InputAction leftControllerPos;
     public InputAction rightControllerPos;
+    public InputAction leftGripButton;
+
     //public CharacterMovement character;
     public float gripPressedValue;
     private bool activationPressed;
@@ -103,8 +105,21 @@ public class ActionController : MonoBehaviour
         secondaryButton.performed += SecondaryButtonPerformed;
         secondaryButton.canceled += SecondaryButtonCanceled;
 
-
         rightControllerPos.performed += RightPositionPerformed;
+
+        leftGripButton.performed += LeftGripButtonPerformed;
+        leftGripButton.canceled += LeftGripButtonCancel;
+    }
+
+    private void LeftGripButtonCancel(InputAction.CallbackContext obj)
+    {
+        gripPressedValue = 0f;
+    }
+
+    private void LeftGripButtonPerformed(InputAction.CallbackContext obj)
+    {
+        gripPressedValue = leftGripButton.ReadValue<float>();
+        Debug.Log(gripPressedValue);
     }
 
     private void LeftPositionPerformed(InputAction.CallbackContext obj)
@@ -330,6 +345,8 @@ public class ActionController : MonoBehaviour
 
         rightTriggerButton.Enable();
         rightControllerPos.Enable();
+
+        leftGripButton.Enable();
     }
 
     void OnDisable()
@@ -342,5 +359,7 @@ public class ActionController : MonoBehaviour
 
         rightTriggerButton.Disable();
         rightControllerPos.Disable();
+
+        leftGripButton.Disable();
     }
 }

@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1355320510387464833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8828780529478285206}
+  m_Layer: 0
+  m_Name: partcielAt
+  m_TagString: Untagged
+  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8828780529478285206
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355320510387464833}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0000041292337, y: 0.0011716613, z: 0.0033481389}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7909435669864695118}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7909435669864695119
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,7 +60,8 @@ Transform:
   m_LocalRotation: {x: 0.05383063, y: 0.59995455, z: 0.08170543, w: -0.7940284}
   m_LocalPosition: {x: -0.88, y: -0.09, z: 0.28}
   m_LocalScale: {x: 1046.8258, y: 1046.8257, z: 1046.826}
-  m_Children: []
+  m_Children:
+  - {fileID: 8828780529478285206}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -169.425, y: 106.204, z: 176.199}
@@ -110,3 +141,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 547556954241212385}
   playerAxe: 0
+  burstParticle: {fileID: 1264580195709535628, guid: 7bcbc7bb0f08f004189d245a37f1c860, type: 3}

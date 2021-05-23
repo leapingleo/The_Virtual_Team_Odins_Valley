@@ -54,7 +54,7 @@ public class OdinPart : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            transform.parent.GetComponent<AudioSource>().Play();
+          //  transform.parent.GetComponent<AudioSource>().Play();
             moveToOdin = true;
             odinStatue.GetComponent<Odin>().AddPart();
           //  StartCoroutine(DestroyObject(0.75f));

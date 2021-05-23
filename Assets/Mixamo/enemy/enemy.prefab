@@ -958,6 +958,7 @@ MonoBehaviour:
   navmeshAgent: {fileID: 2696548208556754304}
   animator: {fileID: 4050164489828078400}
   axe: {fileID: 1365519661951630657}
+  burstParticle: {fileID: 1264580195709535628, guid: 7bcbc7bb0f08f004189d245a37f1c860, type: 3}
 --- !u!95 &4050164489828078400
 Animator:
   serializedVersion: 3

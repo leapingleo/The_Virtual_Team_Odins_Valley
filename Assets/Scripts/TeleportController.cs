@@ -5,14 +5,14 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class TeleportController : MonoBehaviour
 {
-    private LineRenderer lineRenderer;
+    public LineRenderer lineRenderer;
     private XRInteractorLineVisual lineVisual;
     private XRRayInteractor xRRayInteractor;
-    public GameObject teleportReticle;
+   // public GameObject teleportReticle;
     // Start is called before the first frame update
     void Start()
     {
-        lineRenderer = GetComponent<LineRenderer>();
+       // lineRenderer = GetComponent<LineRenderer>();
         lineVisual = GetComponent<XRInteractorLineVisual>();
         xRRayInteractor = GetComponent<XRRayInteractor>();
     }
@@ -20,20 +20,20 @@ public class TeleportController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (ActionController.Instance.gripPressedValue > 0.2f)
+        if (ActionController.Instance.gripPressedValue > 0f)
         {
             //Debug.Log(ActionController.Instance.gripPressedValue);
             lineRenderer.enabled = true;
             lineVisual.enabled = true;
             xRRayInteractor.enabled = true;
-            teleportReticle.SetActive(true);
+            //teleportReticle.SetActive(true);
         } 
         else
         {
             lineRenderer.enabled = false;
             lineVisual.enabled = false;
             xRRayInteractor.enabled = false;
-            teleportReticle.SetActive(false);
+          //  teleportReticle.SetActive(false);
         }
             
     }

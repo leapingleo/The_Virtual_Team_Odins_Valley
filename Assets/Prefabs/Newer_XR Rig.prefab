@@ -739,6 +739,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Right Controller Pos
       m_Flags: 0
+  leftGripButton:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
   gripPressedValue: 0.25
 --- !u!114 &6170288447013412488
 MonoBehaviour:
@@ -769,7 +777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48d8fd13c118f444d8cbdedc38990cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportReticle: {fileID: 0}
+  lineRenderer: {fileID: 0}
 --- !u!114 &5806871807384037792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1821,7 +1829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48d8fd13c118f444d8cbdedc38990cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportReticle: {fileID: 0}
+  lineRenderer: {fileID: 0}
 --- !u!114 &8489840942437473620
 MonoBehaviour:
   m_ObjectHideFlags: 0
