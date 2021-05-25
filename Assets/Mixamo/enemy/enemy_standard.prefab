@@ -618,7 +618,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.45
+  m_Radius: 0.85
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6320689462003264488
 MonoBehaviour:
@@ -958,6 +958,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 6320689462377447550}
   playerAxe: 0
+  burstParticle: {fileID: 0}
 --- !u!1 &6320689462525743678
 GameObject:
   m_ObjectHideFlags: 0
