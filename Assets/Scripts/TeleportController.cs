@@ -8,6 +8,7 @@ public class TeleportController : MonoBehaviour
     public LineRenderer lineRenderer;
     private XRInteractorLineVisual lineVisual;
     private XRRayInteractor xRRayInteractor;
+    public GameObject teleportReticle;
    // public GameObject teleportReticle;
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,7 @@ public class TeleportController : MonoBehaviour
             lineRenderer.enabled = true;
             lineVisual.enabled = true;
             xRRayInteractor.enabled = true;
+            teleportReticle.SetActive(true);
             //teleportReticle.SetActive(true);
         } 
         else
@@ -33,7 +35,8 @@ public class TeleportController : MonoBehaviour
             lineRenderer.enabled = false;
             lineVisual.enabled = false;
             xRRayInteractor.enabled = false;
-          //  teleportReticle.SetActive(false);
+            teleportReticle.SetActive(false);
+            //  teleportReticle.SetActive(false);
         }
             
     }

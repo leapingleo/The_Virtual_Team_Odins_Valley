@@ -28,4 +28,9 @@ public class UI : MonoBehaviour
         collectableText.transform.rotation = collectablePos.rotation;
         collectableText.text = "x " + player.Collected;
     }
+
+    public void StartGame()
+    {
+        Debug.Log("start the game");
+    }
 }

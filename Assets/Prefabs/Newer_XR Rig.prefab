@@ -765,6 +765,7 @@ MonoBehaviour:
   indicatorSphere: {fileID: 0}
   lineRenderer: {fileID: 3754478951625760558}
   hand: 0
+  length: 1
 --- !u!114 &2574267650742801951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -778,6 +779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 0}
+  teleportReticle: {fileID: 0}
 --- !u!114 &5806871807384037792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1817,6 +1819,7 @@ MonoBehaviour:
   indicatorSphere: {fileID: 0}
   lineRenderer: {fileID: 3754478949953442421}
   hand: 1
+  length: 1
 --- !u!114 &2883854600624196478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1830,6 +1833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 0}
+  teleportReticle: {fileID: 0}
 --- !u!114 &8489840942437473620
 MonoBehaviour:
   m_ObjectHideFlags: 0

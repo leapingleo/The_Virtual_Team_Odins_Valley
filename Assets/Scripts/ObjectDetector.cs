@@ -18,6 +18,7 @@ public class ObjectDetector : MonoBehaviour
     public enum Hand { LEFT, RIGHT};
     public Hand hand;
     private bool triggerPressed;
+    public float length = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +57,7 @@ public class ObjectDetector : MonoBehaviour
                 detectedObject = hit.transform.gameObject;
             }
         } else {
-            DrawIndicatorRay(transform.position, transform.position + transform.forward, 0.005f);
+            DrawIndicatorRay(transform.position, transform.position + transform.forward * length, 0.005f);
             SetIndicatorPos(new Vector3(999, 999, 999));
         }
 
