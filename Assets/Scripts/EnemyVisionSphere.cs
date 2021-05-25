@@ -50,6 +50,14 @@ public class EnemyVisionSphere : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            detectedPlayer = false;
+        }
+    }
+
 
 
 }

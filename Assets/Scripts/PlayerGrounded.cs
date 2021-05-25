@@ -14,7 +14,7 @@ public class PlayerGrounded : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer != 9 || other.gameObject.layer != 10)
+        if (other.gameObject.layer != 10)
             grounded = true;
 
         //if (other.gameObject.CompareTag("GravityPlatform"))
@@ -44,7 +44,7 @@ public class PlayerGrounded : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer != 9 || other.gameObject.layer != 10)
+        if (other.gameObject.layer != 10)
             grounded = false;
     }
 

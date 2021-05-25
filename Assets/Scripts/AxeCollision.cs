@@ -11,6 +11,7 @@ public class AxeCollision : MonoBehaviour
 
     void Start()
     {
+        
         collider.enabled = false;
     }
 
@@ -31,8 +32,11 @@ public class AxeCollision : MonoBehaviour
             if (other.CompareTag("Throwable"))
             {
                 EnemyAI enemyScript = other.gameObject.GetComponent<EnemyAI>();
-                GameObject particle = Instantiate(burstParticle, transform.position, Quaternion.identity);
-                Destroy(particle, 0.5f);
+                if (!enemyScript.hasShield)
+                {
+                    GameObject particle = Instantiate(burstParticle, transform.position, Quaternion.identity);
+                    Destroy(particle, 0.5f);
+                }
                 Debug.Log("enemy");
                 if (enemyScript)
                 {
