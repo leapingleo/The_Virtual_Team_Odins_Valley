@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ObjectDetector : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class ObjectDetector : MonoBehaviour
     public enum Hand { LEFT, RIGHT};
     public Hand hand;
     private bool triggerPressed;
-    public float length = 1f;
+    public float length;
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +32,8 @@ public class ObjectDetector : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        int layer =  LayerMask.GetMask("GrabThrow") | LayerMask.GetMask("Interactable") | LayerMask.GetMask("GravityInteractable") | LayerMask.GetMask("IgnoreInteractable") | LayerMask.GetMask("Island");
+        int layer =  LayerMask.GetMask("GrabThrow") | LayerMask.GetMask("Interactable") | LayerMask.GetMask("GravityInteractable") | LayerMask.GetMask("IgnoreInteractable") | LayerMask.GetMask("Island") |
+             LayerMask.GetMask("UI");
 
 
         if (hand == Hand.LEFT)
@@ -41,7 +43,7 @@ public class ObjectDetector : MonoBehaviour
         if (hand == Hand.RIGHT)
             triggerPressed = ActionController.Instance.RightTriggerPressed;
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 1f, layer))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, length, layer))
        // if (Physics.Raycast(transform.position, transform.forward, out hit, 1f))
         {
             //ProBuilder API wants Screen Pos
@@ -63,19 +65,7 @@ public class ObjectDetector : MonoBehaviour
 
         if (triggerPressed && detectedObject != null)
         {
-            if (detectedObject.CompareTag("Grabable") || detectedObject.CompareTag("GrabableNotWithPlayer"))
-                MoveObj(detectedObject);
-            if (detectedObject.CompareTag("Rotatable") || detectedObject.CompareTag("RotatableNotWithPlayer"))
-                RotateObject(detectedObject);
-
-            if (detectedObject.CompareTag("Reset"))
-                detectedObject.GetComponent<RestPlayer>().Reset();
-
-            if ((detectedObject.CompareTag("Throwable") || detectedObject.CompareTag("Crate") || detectedObject.CompareTag("Shuriken"))
-                && detectedObject.GetComponent<GrabThrow>().canBeGrabThrown)
-            {
-                GrabObject(detectedObject);
-            }
+            ObjectDetection();
         }
         else if (!triggerPressed && detectedObject != null)
         {
@@ -101,6 +91,34 @@ public class ObjectDetector : MonoBehaviour
         if (hand == Hand.RIGHT)
             lastHandPos = ActionController.Instance.RightHandPos;
       //  lastHandRotation = transform.rotation;
+    }
+
+    void ObjectDetection()
+    {
+        if (detectedObject.CompareTag("Grabable") || detectedObject.CompareTag("GrabableNotWithPlayer"))
+            MoveObj(detectedObject);
+        if (detectedObject.CompareTag("Rotatable") || detectedObject.CompareTag("RotatableNotWithPlayer"))
+            RotateObject(detectedObject);
+
+        if (detectedObject.CompareTag("Reset"))
+            detectedObject.GetComponent<RestPlayer>().Reset();
+
+        if (detectedObject.CompareTag("Tutorial"))
+        {
+            if (ActionController.Instance.LeftTriggerPressed || ActionController.Instance.RightTriggerPressed)
+                SceneManager.LoadScene("Tutorial");
+        }
+        if (detectedObject.CompareTag("Campaign"))
+        {
+            if (ActionController.Instance.LeftTriggerPressed || ActionController.Instance.RightTriggerPressed)
+                SceneManager.LoadScene("final_world");
+        }
+
+        if ((detectedObject.CompareTag("Throwable") || detectedObject.CompareTag("Crate") || detectedObject.CompareTag("Shuriken"))
+            && detectedObject.GetComponent<GrabThrow>().canBeGrabThrown)
+        {
+            GrabObject(detectedObject);
+        }
     }
 
     void RotateObject(GameObject obj)

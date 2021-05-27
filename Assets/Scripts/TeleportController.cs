@@ -9,6 +9,7 @@ public class TeleportController : MonoBehaviour
     private XRInteractorLineVisual lineVisual;
     private XRRayInteractor xRRayInteractor;
     public GameObject teleportReticle;
+    public GameObject exitGameButton;
    // public GameObject teleportReticle;
     // Start is called before the first frame update
     void Start()
@@ -24,7 +25,7 @@ public class TeleportController : MonoBehaviour
         if (ActionController.Instance.gripPressedValue > 0f)
         {
             //Debug.Log(ActionController.Instance.gripPressedValue);
-            lineRenderer.enabled = true;
+            lineRenderer.enabled = false;
             lineVisual.enabled = true;
             xRRayInteractor.enabled = true;
             teleportReticle.SetActive(true);
@@ -32,12 +33,16 @@ public class TeleportController : MonoBehaviour
         } 
         else
         {
-            lineRenderer.enabled = false;
+            lineRenderer.enabled = true;
             lineVisual.enabled = false;
             xRRayInteractor.enabled = false;
             teleportReticle.SetActive(false);
             //  teleportReticle.SetActive(false);
         }
-            
+
+        if (ActionController.Instance.rightGripValue > 0f)
+            exitGameButton.SetActive(true);
+        else
+            exitGameButton.SetActive(false);
     }
 }

@@ -747,7 +747,16 @@ MonoBehaviour:
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
+  rightGripButton:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
   gripPressedValue: 0.25
+  rightGripValue: 0
 --- !u!114 &6170288447013412488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -780,6 +789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 0}
   teleportReticle: {fileID: 0}
+  exitGameButton: {fileID: 0}
 --- !u!114 &5806871807384037792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1834,6 +1844,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 0}
   teleportReticle: {fileID: 0}
+  exitGameButton: {fileID: 0}
 --- !u!114 &8489840942437473620
 MonoBehaviour:
   m_ObjectHideFlags: 0

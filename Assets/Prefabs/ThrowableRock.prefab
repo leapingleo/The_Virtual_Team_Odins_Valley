@@ -80,12 +80,12 @@ MonoBehaviour:
   bc: {fileID: 4739564639573211750}
   moveToSpeed: 50
   moveAwaySpeed: 110
-  respawnTime: 3
   angularVelocityMultiplier: 50
   canBeGrabThrown: 1
-  respawn: 1
   grabbed: 0
   collided: 0
+  respawn: 1
+  explosionPrefab: {fileID: 0}
 --- !u!96 &815287114
 TrailRenderer:
   serializedVersion: 2
@@ -157,8 +157,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0, g: 0.36858153, b: 1, a: 1}
-      key1: {r: 0.05659014, g: 0.03116761, b: 0.9716981, a: 0.53333336}
+      key0: {r: 0.63584906, g: 0.77008516, b: 1, a: 1}
+      key1: {r: 0.21658951, g: 0.84087604, b: 0.9811321, a: 0.53333336}
       key2: {r: 0.19245279, g: 1, b: 0.87180644, a: 0.1882353}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}

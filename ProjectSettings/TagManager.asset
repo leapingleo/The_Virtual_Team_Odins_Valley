@@ -23,6 +23,9 @@ TagManager:
   - UICollectable
   - gravitymodifier
   - Tutorial
+  - Campaign
+  - GravityField
+  - Ocean
   layers:
   - Default
   - TransparentFX
@@ -39,7 +42,7 @@ TagManager:
   - GravityInteractable
   - Gravity
   - IgnoreInteractable
-  - 
+  - GravityField
   - 
   - 
   - 

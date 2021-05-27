@@ -13,6 +13,7 @@ public class OdinPart : MonoBehaviour
     private bool moveToOdin;
     private GameObject flyToHand;
     private CharacterMovement player;
+    public int liveUpThreshold = 20;
 
     /*
      * Yes, this is expensive, but passing by reference would be tedious and time consuming
@@ -46,7 +47,7 @@ public class OdinPart : MonoBehaviour
     public void SetMoveToOdin(bool moveToOdin)
     {
         this.moveToOdin = moveToOdin;
-        odinStatue.GetComponent<Odin>().AddPart();
+      //  odinStatue.GetComponent<Odin>().AddPart();
         odinDirection = (odinStatue.transform.position - transform.position).normalized;
     }
 
@@ -57,12 +58,13 @@ public class OdinPart : MonoBehaviour
           //  transform.parent.GetComponent<AudioSource>().Play();
             moveToOdin = true;
             odinStatue.GetComponent<Odin>().AddPart();
+            rotationSpeed = 0f;
           //  StartCoroutine(DestroyObject(0.75f));
         }
         if (other.CompareTag("UICollectable"))
         {
             player.Collected += 1;
-            if (player.Collected % 50 == 0)
+            if (player.Collected % 20 == 0)
                 player.Lives += 1;
             Destroy(gameObject);
         }

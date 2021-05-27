@@ -35,4 +35,9 @@ public class PlayerNormal : MonoBehaviour
 
         alignWithSurfaceRot = Quaternion.FromToRotation(Vector3.up, groundNormal);
     }
+
+    public void ResetGroundNormal()
+    {
+        groundNormal = Vector3.up;
+    }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.SceneManagement;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -50,6 +51,7 @@ public class CharacterMovement : MonoBehaviour
     private float speed;
     private Vector3 moveDir;
     private bool grounded;
+    public bool Grounded { get { return grounded; } }
     private bool jumpRequest = false;
     private bool holdingDownMainButton = false;
     private bool holdingDownGlideButton = false;
@@ -58,15 +60,18 @@ public class CharacterMovement : MonoBehaviour
     private ParticleSystem dustParticle;
 
     private bool movingUpsideDownNonInverse = false;
-
+    [SerializeField]
     private Vector3 checkPointPos;
     public Vector3 CheckPointPos { get { return checkPointPos; } set { checkPointPos = value; } }
+    [SerializeField]
     private int lives = 99;
     public int Lives { get { return lives; } set { lives = value; } }
-    private int collected = 99;
+    [SerializeField]
+    private int collected = 999;
     public int Collected { get { return collected; } set { collected = value; } }
 
-
+    public bool inGravityLevel = false;
+    public TrailRenderer trailRenderer;
 
     // Start is called before the first frame update
     void Start()
@@ -76,10 +81,34 @@ public class CharacterMovement : MonoBehaviour
         customGravity.SetRigidBody(rigidBody);
     }
 
+    IEnumerator BackToTitle()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene("title screen");
+    }
+
+    public void Respawn()
+    {
+        lives--;
+        transform.position = checkPointPos;
+        playerNormal.ResetGroundNormal();
+        rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
+        transform.localRotation = Quaternion.identity;
+        trailRenderer.enabled = false;
+    }
+
     private void Update()
     {
-        if (transform.position.y < 0.25f)
+
+        if (lives < 1)
+        {
+            // StartCoroutine(BackToTitle());
+            lives = 999;
             transform.position = checkPointPos;
+        }
+
+       // if (transform.position.y < -0.25f && lives > 0)
+        //    Respawn();
 
         /*
          * What can happen is that the player might jump off the gravity ledge 
@@ -146,7 +175,12 @@ public class CharacterMovement : MonoBehaviour
             anim.SetTrigger("attack");
         }
 
-        moveDir = new Vector3(ActionController.Instance.JoystickDirection.x, 0f, ActionController.Instance.JoystickDirection.z).normalized;
+        if (ActionController.Instance.JoystickDirection.sqrMagnitude > 0.01f * 0.01f)
+        {
+            moveDir = new Vector3(ActionController.Instance.JoystickDirection.x, 0f, ActionController.Instance.JoystickDirection.z);
+        }
+        else
+            moveDir = Vector3.zero;
 
         /*
          * If the player moves the character and enters upside down area then it should be inversed movement direction.
@@ -163,10 +197,13 @@ public class CharacterMovement : MonoBehaviour
             movingUpsideDownNonInverse = false;
         }
 
-        if (moveDir != Vector3.zero)
+        if (moveDir.sqrMagnitude > 0.01f * 0.01f)
         {
             if (grounded)
+            {
                 anim.SetTrigger("walk");
+                trailRenderer.enabled = false;
+            }
 
             /*
              * Inverse the rotation as well.
@@ -198,7 +235,10 @@ public class CharacterMovement : MonoBehaviour
         else
         {
             if (grounded)
+            {
+                trailRenderer.enabled = false;
                 anim.SetTrigger("idle");
+            }
 
             //transform.rotation = playerGrounded.AlignWithSurfaceRot;
         }      
@@ -227,6 +267,7 @@ public class CharacterMovement : MonoBehaviour
             {
                 glideFactor = glideForceFactor;
                 crow.transform.position = crowGlideTransform.position;
+                trailRenderer.enabled = true;
             }
             else
             {
@@ -327,7 +368,8 @@ public class CharacterMovement : MonoBehaviour
 
     public void GetHitByEnemyAxe()
     {
-        Debug.Log("hit");
+        if (lives > 0)
+            lives--;
         /*
         * THIS IS THE LOGIC FOR WHEN THE PLAYER GETS HIT!
         */
@@ -344,6 +386,12 @@ public class CharacterMovement : MonoBehaviour
     {
         dustParticle.transform.position = rightLeg.transform.position;
         dustParticle.Play();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.CompareTag("Ocean"))
+            Respawn();
     }
 
 }

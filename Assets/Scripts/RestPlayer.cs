@@ -27,6 +27,7 @@ public class RestPlayer : MonoBehaviour
             player.transform.position = new Vector3(0.4f, 1f, 0.85f);
 
         if (type == ResetType.RESET_GAME)
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene("title screen");
     }
 }

@@ -5,13 +5,14 @@ using UnityEngine;
 public class Crate : GrabThrow
 {
     public GameObject collectible;
-    public int numCollectibles;
+    private int numCollectibles;
 
     private GameObject[] collectibles;
     private Transform parent;
 
     private void Awake()
     {
+        numCollectibles = Random.Range(1, 6);
         collectibles = new GameObject[numCollectibles];
 
         for (int i = 0; i < numCollectibles; i++)
@@ -22,6 +23,7 @@ public class Crate : GrabThrow
 
         }
         parent = transform.parent;
+        
     }
 
 

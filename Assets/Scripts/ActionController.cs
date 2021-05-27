@@ -16,6 +16,7 @@ public class ActionController : MonoBehaviour
     public InputAction leftControllerPos;
     public InputAction rightControllerPos;
     public InputAction leftGripButton;
+    public InputAction rightGripButton;
 
     //public CharacterMovement character;
     public float gripPressedValue;
@@ -65,6 +66,7 @@ public class ActionController : MonoBehaviour
     public bool LeftTriggerPressed { get { return leftTriggerPressed; } }
     private bool rightTriggerPressed;
     public bool RightTriggerPressed { get { return rightTriggerPressed; } }
+    public float rightGripValue;
 
     void Awake()
     {
@@ -109,6 +111,9 @@ public class ActionController : MonoBehaviour
 
         leftGripButton.performed += LeftGripButtonPerformed;
         leftGripButton.canceled += LeftGripButtonCancel;
+
+        rightGripButton.performed += RightGripButtonPerformed;
+        rightGripButton.canceled += RightGripButtonCancel;
     }
 
     private void LeftGripButtonCancel(InputAction.CallbackContext obj)
@@ -116,10 +121,20 @@ public class ActionController : MonoBehaviour
         gripPressedValue = 0f;
     }
 
+    private void RightGripButtonPerformed(InputAction.CallbackContext obj)
+    {
+        rightGripValue = rightGripButton.ReadValue<float>();
+    }
+
+    private void RightGripButtonCancel(InputAction.CallbackContext obj)
+    {
+        rightGripValue = 0f;
+    }
+
     private void LeftGripButtonPerformed(InputAction.CallbackContext obj)
     {
         gripPressedValue = leftGripButton.ReadValue<float>();
-        Debug.Log(gripPressedValue);
+        
     }
 
     private void LeftPositionPerformed(InputAction.CallbackContext obj)
@@ -347,6 +362,7 @@ public class ActionController : MonoBehaviour
         rightControllerPos.Enable();
 
         leftGripButton.Enable();
+        rightGripButton.Enable();
     }
 
     void OnDisable()
@@ -361,5 +377,6 @@ public class ActionController : MonoBehaviour
         rightControllerPos.Disable();
 
         leftGripButton.Disable();
+        rightGripButton.Disable();
     }
 }

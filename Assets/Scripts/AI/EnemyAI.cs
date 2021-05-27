@@ -22,6 +22,7 @@ public class EnemyAI : GrabThrow
     private bool isDizzy = false;
     public GameObject axe;
     public AxeCollision axeCollision;
+    public GameObject voidEffect;
 
     private void Start()
     {
@@ -129,6 +130,8 @@ public class EnemyAI : GrabThrow
 
         if (grabbed)
         {
+            GameObject explosion = Instantiate(voidEffect, transform.position, Quaternion.identity);
+            Destroy(explosion, 1.5f);
             gameObject.SetActive(false);
         }
     }

@@ -16,14 +16,10 @@ public class UIDetector : MonoBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 1f))
-        {
-            if (hit.transform.CompareTag("Tutorial"))
-            {
-                if (ActionController.Instance.LeftTriggerPressed || ActionController.Instance.RightTriggerPressed)
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
-                
-        }
+        //if (Physics.Raycast(transform.position, transform.forward, out hit, 1f))
+       // {
+            
+
+       // }
     }
 }
