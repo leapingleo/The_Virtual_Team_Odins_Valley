@@ -26,6 +26,7 @@ public class OdinPartTeleport : MonoBehaviour
         {
             animator.SetTrigger("DisappearReappear");
             StartCoroutine(DisReappear());
+            GetComponent<SineMovement>().enabled = false;
         }
             
     }
