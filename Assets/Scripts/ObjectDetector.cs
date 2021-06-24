@@ -15,15 +15,20 @@ public class ObjectDetector : MonoBehaviour
     private Vector3 hitNormal;
     Vector3 cameraPoint = Vector3.zero;
     public LineRenderer lineRenderer;
+    private LayerMask ignoreLayer;
+    private InteractiveAimReticle interactiveAimReticle;
 
     public enum Hand { LEFT, RIGHT};
     public Hand hand;
     private bool triggerPressed;
     public float length;
+    private float offsetAmount = 0.0015f;
 
     // Start is called before the first frame update
     void Start()
     {
+        interactiveAimReticle = indicatorSphere.GetComponent<InteractiveAimReticle>();
+        ignoreLayer = ~LayerMask.GetMask("Ignore");
         actionController = GetComponent<ActionController>();
       //  lineRenderer = GetComponent<LineRenderer>();
     }
@@ -32,8 +37,7 @@ public class ObjectDetector : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        int layer =  LayerMask.GetMask("GrabThrow") | LayerMask.GetMask("Interactable") | LayerMask.GetMask("GravityInteractable") | LayerMask.GetMask("IgnoreInteractable") | LayerMask.GetMask("Island") |
-             LayerMask.GetMask("UI");
+        int layer =  LayerMask.GetMask("GrabThrow") | LayerMask.GetMask("Interactable") | LayerMask.GetMask("GravityInteractable") | LayerMask.GetMask("IgnoreInteractable") | LayerMask.GetMask("UI");
 
 
         if (hand == Hand.LEFT)
@@ -53,14 +57,40 @@ public class ObjectDetector : MonoBehaviour
             SetIndicatorPos(hit.point);
             DrawIndicatorRay(transform.position, hit.point, 0.005f);
 
+            if (!interactiveAimReticle.hand)
+            {
+                GrabThrow grabThrow = hit.transform.gameObject.GetComponent<GrabThrow>();
+
+                if (grabThrow == null || grabThrow.canBeGrabThrown)
+                {
+                   interactiveAimReticle.TurnOnHand();
+                }
+            }
+
             if (detectedObject == null && triggerPressed )
             {
               //  ActionController.Instance.TriggerOccupied = true;
                 detectedObject = hit.transform.gameObject;
             }
         } else {
-            DrawIndicatorRay(transform.position, transform.position + transform.forward * length, 0.005f);
-            SetIndicatorPos(new Vector3(999, 999, 999));
+
+            if (!interactiveAimReticle.turnedOff)
+            {
+                interactiveAimReticle.TurnOff();
+            }
+
+            if (Physics.Raycast(transform.position, transform.forward, out hit, length, ignoreLayer))
+            {
+                hitNormal = hit.normal;
+                //show where the ray hit on object's surface
+                SetIndicatorPos(hit.point);
+                DrawIndicatorRay(transform.position, hit.point, 0.005f);
+            }
+            else
+            {
+                DrawIndicatorRay(transform.position, transform.position + transform.forward * length, 0.005f);
+                SetIndicatorPos(transform.position + transform.forward * length);
+            }
         }
 
         if (triggerPressed && detectedObject != null)
@@ -117,6 +147,10 @@ public class ObjectDetector : MonoBehaviour
         if ((detectedObject.CompareTag("Throwable") || detectedObject.CompareTag("Crate") || detectedObject.CompareTag("Shuriken"))
             && detectedObject.GetComponent<GrabThrow>().canBeGrabThrown)
         {
+            if (!interactiveAimReticle.reticle)
+            {
+                interactiveAimReticle.TurnOnReticle();
+            }
             GrabObject(detectedObject);
         }
     }
@@ -175,8 +209,11 @@ public class ObjectDetector : MonoBehaviour
         else
             indicatorSphere.SetActive(true);
 
-        indicatorSphere.transform.position = pos;
-        indicatorSphere.transform.rotation = Quaternion.FromToRotation(Vector3.up, hitNormal);
+        Vector3 indicatorPosition = pos - (pos - transform.position).normalized * offsetAmount;
+
+        indicatorSphere.transform.position = indicatorPosition;
+        indicatorSphere.transform.rotation = transform.rotation;
+        //indicatorSphere.transform.rotation = Quaternion.FromToRotation(Vector3.up, hitNormal);
     }
 
     void DrawIndicatorRay(Vector3 startPos, Vector3 endPos, float width)
@@ -190,7 +227,7 @@ public class ObjectDetector : MonoBehaviour
         lineRenderer.endWidth = width;
 
         lineRenderer.SetPosition(0, startPos);
-        lineRenderer.SetPosition(1, endPos);
+        lineRenderer.SetPosition(1, endPos - (endPos - transform.position).normalized * offsetAmount);
     }
 
     void GrabObject(GameObject obj)

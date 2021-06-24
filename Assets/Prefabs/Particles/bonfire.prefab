@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2870066994812410276
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2136096006695581756}
+  - component: {fileID: 1714483238463557785}
+  m_Layer: 0
+  m_Name: collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2136096006695581756
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2870066994812410276}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4461784347398909007}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1714483238463557785
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2870066994812410276}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.07513766, y: 0.068891555, z: 0.029328488}
+  m_Center: {x: -0.00045000017, y: -0.0026096478, z: 0.0036844201}
 --- !u!1 &4461784345793580632
 GameObject:
   m_ObjectHideFlags: 0
@@ -5693,8 +5737,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4461784347504651992}
-  - component: {fileID: 4461784345898569686}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: ThrowableRock (2)
   m_TagString: Throwable
   m_Icon: {fileID: 0}
@@ -5716,19 +5759,6 @@ Transform:
   m_Father: {fileID: 4461784347398909007}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -89.202, y: 0, z: 0}
---- !u!65 &4461784345898569686
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4461784345898569687}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.011852685, y: 0.011208693, z: 0.013647179}
-  m_Center: {x: -0.0007417613, y: 0.0013402662, z: -0.00027911318}
 --- !u!1 &4461784345935704310
 GameObject:
   m_ObjectHideFlags: 0
@@ -5738,8 +5768,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4461784346417793844}
-  - component: {fileID: 4461784345935704309}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: ThrowableRock (6)
   m_TagString: Throwable
   m_Icon: {fileID: 0}
@@ -5761,19 +5790,6 @@ Transform:
   m_Father: {fileID: 4461784347398909007}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: -102.6, y: -0.65, z: 48.9}
---- !u!65 &4461784345935704309
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4461784345935704310}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.011852685, y: 0.011208693, z: 0.013647179}
-  m_Center: {x: -0.0007417613, y: 0.0013402662, z: -0.00027911318}
 --- !u!1 &4461784345987740000
 GameObject:
   m_ObjectHideFlags: 0
@@ -5783,8 +5799,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4461784346639168322}
-  - component: {fileID: 4461784345987739999}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: ThrowableRock (5)
   m_TagString: Throwable
   m_Icon: {fileID: 0}
@@ -5806,19 +5821,6 @@ Transform:
   m_Father: {fileID: 4461784347398909007}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 18.69, y: 66.22, z: 0}
---- !u!65 &4461784345987739999
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4461784345987740000}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.011852685, y: 0.011208693, z: 0.013647179}
-  m_Center: {x: -0.0007417613, y: 0.0013402662, z: -0.00027911318}
 --- !u!1 &4461784346097869412
 GameObject:
   m_ObjectHideFlags: 0
@@ -14152,8 +14154,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4461784347060640639}
-  - component: {fileID: 4461784346963053136}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: ThrowableRock (4)
   m_TagString: Throwable
   m_Icon: {fileID: 0}
@@ -14175,19 +14176,6 @@ Transform:
   m_Father: {fileID: 4461784347398909007}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 18.69, y: 35.02, z: 0}
---- !u!65 &4461784346963053136
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4461784346963053137}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.011852685, y: 0.011208693, z: 0.013647179}
-  m_Center: {x: -0.0007417613, y: 0.0013402662, z: -0.00027911318}
 --- !u!1 &4461784347058598127
 GameObject:
   m_ObjectHideFlags: 0
@@ -15077,8 +15065,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4461784345489705553}
-  - component: {fileID: 4461784347231190260}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: ThrowableRock (3)
   m_TagString: Throwable
   m_Icon: {fileID: 0}
@@ -15100,19 +15087,6 @@ Transform:
   m_Father: {fileID: 4461784347398909007}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 18.69, y: 35.02, z: 0}
---- !u!65 &4461784347231190260
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4461784347231190261}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.011852685, y: 0.011208693, z: 0.013647179}
-  m_Center: {x: -0.0007417613, y: 0.0013402662, z: -0.00027911318}
 --- !u!1 &4461784347398909008
 GameObject:
   m_ObjectHideFlags: 0
@@ -15149,6 +15123,7 @@ Transform:
   - {fileID: 4461784346639168322}
   - {fileID: 4461784346417793844}
   - {fileID: 4461784346162053371}
+  - {fileID: 2136096006695581756}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
@@ -15186,8 +15161,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4461784346162053371}
-  - component: {fileID: 4461784347423365763}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: ThrowableRock (7)
   m_TagString: Throwable
   m_Icon: {fileID: 0}
@@ -15209,19 +15183,6 @@ Transform:
   m_Father: {fileID: 4461784347398909007}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 18.69, y: 35.02, z: 27.82}
---- !u!65 &4461784347423365763
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4461784347423365764}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.011852685, y: 0.011208693, z: 0.013647179}
-  m_Center: {x: -0.0007417613, y: 0.0013402662, z: -0.00027911318}
 --- !u!1 &7443424502514608230
 GameObject:
   m_ObjectHideFlags: 0
