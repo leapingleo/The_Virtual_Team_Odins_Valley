@@ -19,14 +19,24 @@ public class EnemyAI : GrabThrow
     public bool hitByProjectile;
     public Vector3 hitPosition;
     private int numHits;
+    public int NumHits { get { return numHits; } }
     private bool isDizzy = false;
     public GameObject axe;
     public AxeCollision axeCollision;
     public GameObject voidEffect;
 
+    private void Awake()
+    {
+    }
+
     private void Start()
     {
-        numHits = Random.Range(4, 10);
+
+    }
+
+    public void InitialiseValues()
+    {
+        numHits = Random.Range(2, 4);
         movementSpeed = agent.speed;
         ConstructBehaviourTree();
         rb.isKinematic = true;

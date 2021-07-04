@@ -275,6 +275,8 @@ public class ActionController : MonoBehaviour
     {
         // handObject.transform.GetChild(1).gameObject.SetActive(false);
         Vector2 vec2 = joystick.ReadValue<Vector2>();
+        //Transform modifiedTransform = transform;
+        //modifiedTransform.rotation = new Quaternion(0f, transform.rotation.y, transform.rotation.z, 0f);
         joystickDirection = transform.TransformDirection(new Vector3(vec2.x, 0.0f, vec2.y));
         joystickDirection.y = 0f;
     }

@@ -289,14 +289,31 @@ public class CharacterMovement : MonoBehaviour
 
         Vector3 gravityVelocity = playerNormal.AlignWithSurfaceRot * rigidBody.velocity;
 
-        if (gravityVelocity.y < 0)
+        if (!usingGravity)
         {
-            customGravity.gravityScale = fallingMultiplier;
+            if (gravityVelocity.y < 0)
+            {
+                customGravity.gravityScale = fallingMultiplier;
+            }
+            else if (gravityVelocity.y > 0 && !holdingDownMainButton)
+            {
+                customGravity.gravityScale = lowJumpMultiplier;
+            }
         }
-        else if (gravityVelocity.y > 0 && !holdingDownMainButton)
+        else
         {
-            customGravity.gravityScale = lowJumpMultiplier;
+            if (gravityVelocity.x < 0 && gravityVelocity.y < 0 && gravityVelocity.z < 0)
+            {
+                customGravity.gravityScale = fallingMultiplier;
+            }
+            else if ((gravityVelocity.x < 0 && gravityVelocity.y < 0 && gravityVelocity.z < 0) 
+                && !holdingDownMainButton)
+            {
+                customGravity.gravityScale = lowJumpMultiplier;
+            }
         }
+
+        
 
         if (playerNormal.GroundNormal.y < -inverseControlsThreshold)
         {

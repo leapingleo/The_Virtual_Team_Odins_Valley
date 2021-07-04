@@ -19,7 +19,7 @@ public class StayOnPlatform : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.transform.CompareTag("Grabable") || collision.transform.CompareTag("Rotatable"))
+        if ((collision.transform.CompareTag("Grabable") || collision.transform.CompareTag("Rotatable")) && transform.parent == null)
         {
             transform.parent = collision.transform;
         }
