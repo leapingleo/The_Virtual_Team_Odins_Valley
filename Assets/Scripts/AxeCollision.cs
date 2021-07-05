@@ -59,6 +59,7 @@ public class AxeCollision : MonoBehaviour
         {
             if (other.CompareTag("Player"))
             {
+                TurnOffCollider();
                 other.gameObject.GetComponent<CharacterMovement>().GetHitByEnemyAxe();
             }
         }
