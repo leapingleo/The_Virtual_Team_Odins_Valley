@@ -103,7 +103,7 @@ public class CharacterMovement : MonoBehaviour
         if (lives < 1)
         {
             // StartCoroutine(BackToTitle());
-            lives = ;
+            lives = 999;
             transform.position = checkPointPos;
         }
 
