@@ -49,7 +49,7 @@ public class Crate : GrabThrow
 
         if (!grabbed && collision.gameObject.layer == 9 && collision.gameObject.GetComponent<GrabThrow>().grabbed)
         {
-            parent.GetComponent<AudioSource>().Play();
+           // parent.GetComponent<AudioSource>().Play();
             GetComponent<BoxCollider>().enabled = false;
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
@@ -61,7 +61,7 @@ public class Crate : GrabThrow
 
     public void GetHitByAxe()
     {
-        parent.GetComponent<AudioSource>().Play();
+     //   parent.GetComponent<AudioSource>().Play();
         GetComponent<BoxCollider>().enabled = false;
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(1).gameObject.SetActive(true);

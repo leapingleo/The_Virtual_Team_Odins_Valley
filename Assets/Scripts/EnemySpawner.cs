@@ -14,12 +14,13 @@ public class EnemySpawner : MonoBehaviour
     private GameObject player;
     private ParticleSystem spawnParticle;
     private bool spawned = false;
+    private float yOffset = 0.025f;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        spawnParticle = Instantiate(spawnParticles, transform.position, Quaternion.identity, transform).GetComponent<ParticleSystem>();
+        spawnParticle = Instantiate(spawnParticles, transform.position + transform.up * yOffset, Quaternion.identity, transform).GetComponent<ParticleSystem>();
         
         if (useStandardEnemy)
         {
@@ -38,13 +39,13 @@ public class EnemySpawner : MonoBehaviour
     {
         float distanceFrom = Vector3.Distance(player.transform.position, transform.position);
         int numHits = enemy.GetComponent<EnemyAI>().NumHits;
-        Debug.Log(numHits);
+       // Debug.Log(numHits);
 
         if (!spawned &&
             numHits > 0 &&
             distanceFrom <= distance)
         {
-            spawnParticle.transform.position = enemy.transform.position;
+            spawnParticle.transform.position = enemy.transform.position + enemy.transform.up * yOffset;
             spawnParticle.Play();
             spawned = true;
             enemy.SetActive(true);
@@ -54,7 +55,7 @@ public class EnemySpawner : MonoBehaviour
             distanceFrom > distance)
         {
             spawned = false;
-            spawnParticle.transform.position = enemy.transform.position;
+            spawnParticle.transform.position = enemy.transform.position + enemy.transform.up * yOffset;
             spawnParticle.Play();
             enemy.SetActive(false);
             enemy.transform.position = transform.position;
