@@ -15098,7 +15098,7 @@ GameObject:
   - component: {fileID: 4461784347398909007}
   - component: {fileID: 5488808260606634190}
   - component: {fileID: 6806431822096378197}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: bonfire
   m_TagString: Untagged
   m_Icon: {fileID: 0}

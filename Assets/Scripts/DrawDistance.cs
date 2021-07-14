@@ -26,7 +26,7 @@ public class DrawDistance : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        return;
+        //return;
         float distance = Vector3.Distance(character.transform.position, center.transform.position);
        // Debug.Log(distance);
         if (!disabled && distance > distanceTillDraw)
