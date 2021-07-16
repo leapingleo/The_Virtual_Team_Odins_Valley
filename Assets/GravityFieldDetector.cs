@@ -20,7 +20,7 @@ public class GravityFieldDetector : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("y " + other.GetComponent<CharacterMovement>().playerNormal.GroundNormal.y);
+          //  Debug.Log("y " + other.GetComponent<CharacterMovement>().playerNormal.GroundNormal.y);
             if (!other.GetComponent<CharacterMovement>().Grounded && other.GetComponent<CharacterMovement>().inGravityLevel
                 && other.GetComponent<CharacterMovement>().playerNormal.GroundNormal.y < 0.98f)
             {
